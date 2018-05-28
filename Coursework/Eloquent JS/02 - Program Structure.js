@@ -1,7 +1,7 @@
 // Looping a triangle
 var count = "";
 var stringHash = "#######";
-for (i = 0; i < stringHash.length; i++) {
+for (var i = 0; i < stringHash.length; i++) {
   count += stringHash[i];
   console.log(count);
 }
@@ -11,7 +11,7 @@ var nums = [...Array(101).keys()];
 // var nFizzBuzz = 0,
 //     nFizz = 0,
 //     nBuzz = 0;
-for (i = 1; i < nums.length; i++) {
+for (var i = 1; i < nums.length; i++) {
   if (i % 3 == 0 && i % 5 === 0) {
     console.log("FizzBuzz");
     // nFizzBuzz += 1;
@@ -27,3 +27,16 @@ for (i = 1; i < nums.length; i++) {
 }
 
 // Chessboard
+var odds = " # # # #";
+var evens = "# # # # ";
+for (var i = 1; i < 9; i++) {
+  // If odd
+  if (i % 2 !== 0) {
+    console.log(odds);
+  } else {
+    console.log(evens);
+  }
+}
+
+// Chessboard (Any Size)
+
