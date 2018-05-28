@@ -65,3 +65,33 @@ for (var row = 1; row <= size; row++) {
     evens = "";
   }
 }
+
+// Chessboard (Any Size + Refactor)
+var hashChar = "#";
+var spaceChar = " ";
+var odds = "";
+var evens = "";
+var size = 8;
+// Generate rows
+for (var row = 1; row <= size; row++) {
+  // Generate columns
+  for (var col = 0; col < size/2; col++) {
+    if (row % 2 !== 0) {
+      // Generate pattern for odds
+      odds += spaceChar + hashChar;
+    } else {
+      // Generate pattern for evens
+      evens += hashChar + spaceChar;
+    }
+  }
+  // Skip empty lines
+  if (odds === "" || evens === "") {
+    continue
+  }
+  // Log then reset odds pattern for next loop
+  console.log(odds);
+  odds = "";
+  // Log then reset evens pattern for next loop
+  console.log(evens);
+  evens = "";
+}
