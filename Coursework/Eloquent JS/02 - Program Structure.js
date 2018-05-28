@@ -39,4 +39,23 @@ for (var i = 1; i < 9; i++) {
 }
 
 // Chessboard (Any Size)
-
+var hashChar = "#";
+var spaceChar = " ";
+var odds = "";
+var evens = "";
+var size = 8;
+for (var row = 1; row <= size; row++) {
+  if (row % 2 !== 0) {
+    for (var i = 0; i < size/2; i++) {
+      odds += spaceChar + hashChar;
+    }
+    console.log(odds);
+    odds = "";
+  } else {
+    for (var i = 0; i < size/2; i++) {
+      evens += hashChar + spaceChar;
+    }
+    console.log(evens);
+    evens = "";
+  }
+}
