@@ -12,6 +12,7 @@ var nums = [...Array(101).keys()];
 //     nFizz = 0,
 //     nBuzz = 0;
 for (var i = 1; i < nums.length; i++) {
+  // Must check for both conditions first or else program will skip this condition
   if (i % 3 == 0 && i % 5 === 0) {
     console.log("FizzBuzz");
     // nFizzBuzz += 1;
@@ -45,16 +46,21 @@ var odds = "";
 var evens = "";
 var size = 8;
 for (var row = 1; row <= size; row++) {
+  // If odd
   if (row % 2 !== 0) {
+    // Generate pattern for odds
     for (var i = 0; i < size/2; i++) {
       odds += spaceChar + hashChar;
     }
+    // Log then reset odds pattern for next loop
     console.log(odds);
     odds = "";
   } else {
+    // Generate pattern for evens
     for (var i = 0; i < size/2; i++) {
       evens += hashChar + spaceChar;
     }
+    // Log then reset evens pattern for next loop
     console.log(evens);
     evens = "";
   }
