@@ -66,7 +66,7 @@ for (var row = 1; row <= size; row++) {
   }
 }
 
-// Chessboard (Any Size + Refactor)
+// Chessboard (Any Size Alternate Solution)
 var hashChar = "#";
 var spaceChar = " ";
 var odds = "";
@@ -86,7 +86,7 @@ for (var row = 1; row <= size; row++) {
   }
   // Skip empty lines
   if (odds === "" || evens === "") {
-    continue
+    continue;
   }
   // Log then reset odds pattern for next loop
   console.log(odds);
@@ -95,3 +95,18 @@ for (var row = 1; row <= size; row++) {
   console.log(evens);
   evens = "";
 }
+
+// Chessboard (Any Size Refactor)
+var chessArr = "";
+for (var row = 0; row < 8; row++) {
+  for (var col = 0; col < 8; col++) {
+    if ((row + col) % 2 === 0) {
+      chessArr += " ";
+    } else {
+      chessArr += "#";
+    }
+  }
+  chessArr += "\n";
+}
+console.log(chessArr);
+console.log(chessArr.length);
