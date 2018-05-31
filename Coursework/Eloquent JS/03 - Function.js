@@ -30,6 +30,7 @@ isEven(75);
 isEven(-1);
 
 // Bean Counting
+// Counts how many "B" are in a given string
 let countBs = (string) => {
   let count = 0;
   for (var i = 0; i < string.length - 1; i++) {
@@ -39,4 +40,15 @@ let countBs = (string) => {
   }
   return count;
 }
+// Test countBs()
 countBs("Better Business Bureau");
+
+// Indicate the character that is to be counted
+let countChar = (string, char) => {
+  char = "";
+  for (var i = 0; i < string.length - 1; i++) {
+    return char = string[i];
+  }
+}
+// Test countChar
+countChar("Better Business Bureau");
