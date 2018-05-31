@@ -32,23 +32,22 @@ isEven(-1);
 // Bean Counting
 // Counts how many "B" are in a given string
 let countBs = (string) => {
-  let count = 0;
-  for (var i = 0; i < string.length - 1; i++) {
-    if (string[i] === "B") {
-      count += 1;
-    }
-  }
-  return count;
+  // Call countChar()
+  return countChar(string, "B");
 }
 // Test countBs()
 countBs("Better Business Bureau");
 
 // Indicate the character that is to be counted
 let countChar = (string, char) => {
-  char = "";
+  let count = 0;
   for (var i = 0; i < string.length - 1; i++) {
-    return char = string[i];
+    // Works for any character specified
+    if (string[i] === char) {
+      count += 1;
+    }
   }
+  return count;
 }
 // Test countChar
-countChar("Better Business Bureau");
+countChar("Better Business Bureau", "s");
