@@ -7,7 +7,7 @@ let min = (first, second) => {
     return first;
   }
 }
-
+// Test min()
 min(1, 2)
 
 // Recursion
@@ -24,6 +24,7 @@ let isEven = (n) => {
     return isEven(n-2);
   }
 }
+// Test isEven()
 isEven(50);
 isEven(75);
 isEven(-1);
