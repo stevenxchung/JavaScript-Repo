@@ -28,3 +28,15 @@ let isEven = (n) => {
 isEven(50);
 isEven(75);
 isEven(-1);
+
+// Bean Counting
+let countBs = (string) => {
+  let count = 0;
+  for (var i = 0; i < string.length - 1; i++) {
+    if (string[i] === "B") {
+      count += 1;
+    }
+  }
+  return count;
+}
+countBs("Better Business Bureau");
