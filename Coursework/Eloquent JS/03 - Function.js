@@ -16,8 +16,10 @@ let isEven = (n) => {
     return true;
   } else if (n === 1) {
     return false;
+  // if n is negative convert to a positive number and re-enter the function
   } else if (n < 0) {
     return isEven(-n);
+  // Else, re-enter the function as n-2
   } else {
     return isEven(n-2);
   }
