@@ -1,5 +1,5 @@
 // Sum of a range
-let range = (start, end) => {
+let range = (start, end, step = 1) => {
   let arr = [];
   for (var i = start; i <= end; i++) {
     arr.push(i);
