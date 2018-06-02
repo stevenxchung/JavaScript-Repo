@@ -1,8 +1,14 @@
 // Sum of a range
 let range = (start, end, step = 1) => {
   let arr = [];
-  for (var i = start; i <= end; i++) {
-    arr.push(i);
+  if (step > 0) {
+    for (var i = start; i <= end; i += step) {
+      arr.push(i);
+    }
+  } else {
+    for (var i = start; i >= end; i += step) {
+      arr.push(i);
+    }
   }
   return arr;
 }
