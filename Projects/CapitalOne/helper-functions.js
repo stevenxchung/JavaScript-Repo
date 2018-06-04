@@ -19,7 +19,7 @@ helpers.findObj = (dateString) => {
     return stampArr;
 };
 
-// Loops through entire array and grabs key elements
+// Loops through entire array and grabs key (metric) elements
 helpers.keyElements = (dateString, key = null) => {
     let stampArr = [];
     // Loop through each object in array
