@@ -30,6 +30,7 @@
 
 // metricsArr
 
+// GET TESTS
 let metricsArr = [
   {
     timestamp: '2015-09-01T16:00:00.000Z',
@@ -41,18 +42,24 @@ let metricsArr = [
     timestamp: '2015-09-01T16:10:00.000Z',
     temperature: 27.3,
     dewPoint: 16.9,
-    precipitation: 0
+    precipitation: 999
   },
+  {
+    timestamp: '2015-09-01',
+    temperature: 27.3,
+    dewPoint: 16.9,
+    precipitation: 111
+  }
 ];
 
 // Finds the object containing the date within the timestamp
 let findObj = (dateString) => {
     let stampArr = [];
     // Loop through each object in array
-    for (var i = 0; i < globalArr.metricsArr.length - 1; i++) {
-        if (globalArr.metricsArr[i].timestamp.includes(dateString)) {
+    for (var i = 0; i < metricsArr.length; i++) {
+        if (metricsArr[i].timestamp.includes(dateString)) {
             // If there is a match, return the object
-            stampArr.push(globalArr.metricsArr[i]);
+            stampArr.push(metricsArr[i]);
         } else {
             continue;
         }
@@ -61,7 +68,7 @@ let findObj = (dateString) => {
     return stampArr;
 };
 
-foundStamp = findObj('2015-09-01T16:10:00.000Z');
+foundStamp = findObj('2015-09-01');
 
 // TESTING GET STATS FEATURE
 // const metricsArr = [
