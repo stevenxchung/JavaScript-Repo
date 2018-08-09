@@ -17,3 +17,12 @@ whenCatLoaded.then(img => {
   imgElement.src = img.src;
   document.body.appendChild(imgElement);
 });
+
+// Example 3
+import loadImageCallbacked from './load-image-callbacked';
+
+loadImageCallbacked('images/cat4.jpg', (error, img) => {
+  let imgElement = document.createElement('img');
+  imgElement.src = img.src;
+  document.body.appendChild(imgElement);
+});
