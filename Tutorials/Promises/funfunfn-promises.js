@@ -30,7 +30,7 @@ loadImageCallbacked('images/cat4.jpg', (error, img) => {
 // Example 4
 import loadImageCallbacked from './load-image-callbacked';
 
-let addImg = src => {
+let addImg = (src) => {
   let imgElement = document.createElement('img');
   imgElement.src = src;
   document.body.appendChild(imgElement);
@@ -89,3 +89,22 @@ function loadImage(url) {
     })
 }
 export default loadImage;
+
+// Example 7
+import loadImage from './load-image-callbacked';
+
+let addImg = (src) => {
+  let imgElement = document.createElement('img');
+  imgElement.src = src;
+  document.body.appendChild(imgElement);
+};
+
+loadImage('images/cat1.jpg').then((img1) => {
+  addImg(img1.src);
+  loadImage('images/cat2.jpg').then((img2) => {
+    addImg(img2.src);
+    loadImage('images/cat3.jpg').then((img3) => {
+      addImg(img3.src);
+    });
+  });
+});
