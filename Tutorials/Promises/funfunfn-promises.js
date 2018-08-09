@@ -67,3 +67,25 @@ function loadImage(url, callback) {
   image.src = url;
 }
 export default loadImage;
+
+// Example 6
+import 'babelify/polyfill';
+import { resolve } from 'path';
+
+function loadImage(url) {
+    return new Promise((resolve, reject) => {
+        let image = new Image();
+
+        image.onload = function() {
+          resolve(image);
+        };
+
+        image.onerror = function() {
+          let message = 'Could not load image at ' + url;
+          reject(new Error(msg));
+        };
+
+        image.src = url;
+    })
+}
+export default loadImage;
