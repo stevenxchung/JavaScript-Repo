@@ -38,3 +38,33 @@ let animals = [
 let ducks = animals.filter(function(animal) {
   return animal.species === 'duck';
 });
+
+// Example 4
+let animals = [
+  { name: 'Bugs Bunny', species: 'rabbit' },
+  { name: 'Daffy Duck', species: 'duck' },
+  { name: 'Courage', species: 'dog' },
+  { name: 'Donald Duck', species: 'duck' }
+];
+
+// If true, psuh to array, otherwise do not
+let ducks = animals.filter(function(animal) {
+  return animal.species === 'duck';
+});
+
+// Example 5
+let animals = [
+  { name: 'Bugs Bunny', species: 'rabbit' },
+  { name: 'Daffy Duck', species: 'duck' },
+  { name: 'Courage', species: 'dog' },
+  { name: 'Donald Duck', species: 'duck' }
+];
+
+isDuck = function(animal) {
+  return animal.species === 'duck';
+};
+
+// If true, push to array, otherwise do not
+let ducks = animals.filter(isDuck);
+// Opposite of filter()
+let others = animals.reject(isDuck);
