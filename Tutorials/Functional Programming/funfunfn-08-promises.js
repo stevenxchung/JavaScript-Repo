@@ -30,7 +30,7 @@ loadImageCallbacked('images/cat4.jpg', (error, img) => {
 // Example 4
 import loadImageCallbacked from './load-image-callbacked';
 
-let addImg = (src) => {
+let addImg = src => {
   let imgElement = document.createElement('img');
   imgElement.src = src;
   document.body.appendChild(imgElement);
@@ -66,45 +66,66 @@ function loadImage(url, callback) {
 
   image.src = url;
 }
-export default loadImage;
+// export default loadImage;
 
 // Example 6
 import 'babelify/polyfill';
 import { resolve } from 'path';
 
 function loadImage(url) {
-    return new Promise((resolve, reject) => {
-        let image = new Image();
+  return new Promise((resolve, reject) => {
+    let image = new Image();
 
-        image.onload = function() {
-          resolve(image);
-        };
+    image.onload = function() {
+      resolve(image);
+    };
 
-        image.onerror = function() {
-          let message = 'Could not load image at ' + url;
-          reject(new Error(msg));
-        };
+    image.onerror = function() {
+      let message = 'Could not load image at ' + url;
+      reject(new Error(msg));
+    };
 
-        image.src = url;
-    })
+    image.src = url;
+  });
 }
-export default loadImage;
+// export default loadImage;
 
 // Example 7
 import loadImage from './load-image-callbacked';
 
-let addImg = (src) => {
+let addImg = src => {
   let imgElement = document.createElement('img');
   imgElement.src = src;
   document.body.appendChild(imgElement);
 };
 
-loadImage('images/cat1.jpg').then((img1) => {
+loadImage('images/cat1.jpg').then(img1 => {
   addImg(img1.src);
-  loadImage('images/cat2.jpg').then((img2) => {
+  loadImage('images/cat2.jpg').then(img2 => {
     addImg(img2.src);
-    loadImage('images/cat3.jpg').then((img3) => {
+    loadImage('images/cat3.jpg').then(img3 => {
       addImg(img3.src);
     });
   });
 });
+
+// Example 8
+import loadImage from './load-image';
+
+let addImg = src => {
+  let imgElement = document.createElement('img');
+  imgElement.src = src;
+  document.body.appendChild(imgElement);
+};
+
+Promise.all([
+  loadImage('images/cat1.jpg'),
+  loadImage('images/cat2.jpg'),
+  loadImage('images/cat3.jpg')
+])
+  .then(images => {
+    images.forEach(img => addImg(img.src));
+  })
+  .catch(error => {
+    // Handles error here
+  });
