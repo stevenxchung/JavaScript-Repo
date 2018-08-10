@@ -25,3 +25,16 @@ for (var i = 0; i < animals.length; i++) {
 }
 
 console.log(ducks);
+
+// Example 3
+let animals = [
+  { name: 'Bugs Bunny', species: 'rabbit' },
+  { name: 'Daffy Duck', species: 'duck' },
+  { name: 'Courage', species: 'dog' },
+  { name: 'Donald Duck', species: 'duck' }
+];
+
+// If true, psuh to array, otherwise do not
+let ducks = animals.filter(function(animal) {
+  return animal.species === 'duck';
+});
