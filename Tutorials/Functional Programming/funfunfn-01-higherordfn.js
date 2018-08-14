@@ -24,8 +24,6 @@ for (var i = 0; i < animals.length; i++) {
   }
 }
 
-console.log(ducks);
-
 // Example 3
 let animals = [
   { name: 'Bugs Bunny', species: 'rabbit' },
@@ -60,11 +58,14 @@ let animals = [
   { name: 'Donald Duck', species: 'duck' }
 ];
 
-isDuck = function(animal) {
+let isDuck = function(animal) {
   return animal.species === 'duck';
 };
 
 // If true, push to array, otherwise do not
 let ducks = animals.filter(isDuck);
+console.log(ducks);
 // Opposite of filter()
-let others = animals.reject(isDuck);
+// let others = animals.reject(isDuck);
+let others = animals.filter(e => !isDuck(e));
+console.log(others);
