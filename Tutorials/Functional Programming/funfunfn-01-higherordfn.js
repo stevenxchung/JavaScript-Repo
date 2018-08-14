@@ -12,9 +12,10 @@ waffle(30);
 // Example 2
 let animals = [
   { name: 'Bugs Bunny', species: 'rabbit' },
-  { name: 'Daffy Duck', species: 'duck' },
-  { name: 'Courage', species: 'dog' },
-  { name: 'Donald Duck', species: 'duck' }
+  { name: 'Daffy', species: 'duck' },
+  { name: 'Donald', species: 'duck' },
+  { name: 'Goofy', species: 'dog' },
+  { name: 'Mickey', species: 'mouse' }
 ];
 
 let ducks = [];
@@ -27,9 +28,10 @@ for (var i = 0; i < animals.length; i++) {
 // Example 3
 let animals = [
   { name: 'Bugs Bunny', species: 'rabbit' },
-  { name: 'Daffy Duck', species: 'duck' },
-  { name: 'Courage', species: 'dog' },
-  { name: 'Donald Duck', species: 'duck' }
+  { name: 'Daffy', species: 'duck' },
+  { name: 'Donald', species: 'duck' },
+  { name: 'Goofy', species: 'dog' },
+  { name: 'Mickey', species: 'mouse' }
 ];
 
 // If true, psuh to array, otherwise do not
@@ -40,9 +42,10 @@ let ducks = animals.filter(function(animal) {
 // Example 4
 let animals = [
   { name: 'Bugs Bunny', species: 'rabbit' },
-  { name: 'Daffy Duck', species: 'duck' },
-  { name: 'Courage', species: 'dog' },
-  { name: 'Donald Duck', species: 'duck' }
+  { name: 'Daffy', species: 'duck' },
+  { name: 'Donald', species: 'duck' },
+  { name: 'Goofy', species: 'dog' },
+  { name: 'Mickey', species: 'mouse' }
 ];
 
 // If true, psuh to array, otherwise do not
@@ -53,9 +56,10 @@ let ducks = animals.filter(function(animal) {
 // Example 5
 let animals = [
   { name: 'Bugs Bunny', species: 'rabbit' },
-  { name: 'Daffy Duck', species: 'duck' },
-  { name: 'Courage', species: 'dog' },
-  { name: 'Donald Duck', species: 'duck' }
+  { name: 'Daffy', species: 'duck' },
+  { name: 'Donald', species: 'duck' },
+  { name: 'Goofy', species: 'dog' },
+  { name: 'Mickey', species: 'mouse' }
 ];
 
 let isDuck = function(animal) {
