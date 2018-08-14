@@ -43,3 +43,15 @@ let names = animals.map(function(animal) {
 });
 // Check result
 console.log(names);
+
+// Example 4
+let animals = [
+    { name: 'Bugs Bunny', species: 'rabbit' },
+    { name: 'Daffy', species: 'duck' },
+    { name: 'Donald', species: 'duck' },
+    { name: 'Goofy', species: 'dog' },
+    { name: 'Mickey', species: 'mouse' }
+  ];
+let names = animals.map(animal => animal.name);
+// Check result
+console.log(names);
