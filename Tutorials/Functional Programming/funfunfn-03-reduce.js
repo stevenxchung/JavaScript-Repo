@@ -25,8 +25,22 @@ let orders = [
 ];
 
 let totalAmount = orders.reduce(function(sum, order) {
-    console.log("Current sum is: " + sum + " and order amount is: " + order.amount)
+  console.log(
+    'Current sum is: ' + sum + ' and order amount is: ' + order.amount
+  );
   return sum + order.amount;
 }, 0);
+// Check result
+console.log(totalAmount);
+
+// Example 3
+let orders = [
+  { amount: 250 },
+  { amount: 400 },
+  { amount: 100 },
+  { amount: 325 }
+];
+// Reduce() + arrow function
+let totalAmount = orders.reduce((sum, order) => sum + order.amount, 0);
 // Check result
 console.log(totalAmount);
