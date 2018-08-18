@@ -3,7 +3,18 @@
 
 // Example 1
 import fs from 'fs';
-
+// Need to map to encoder
 let output = fs.readFileSync('data.txt');
+
+console.log('output', output);
+
+// Example 2
+import fs from 'fs';
+// Setting up for reduce
+let output = fs
+  .readFileSync('data.txt', 'utf8')
+  .trim()
+  .split('\n')
+  .map(line => line.split('\t'));
 
 console.log('output', output);
