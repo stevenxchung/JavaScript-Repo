@@ -2,3 +2,8 @@
 // This lesson: reduce() is not limited to reducing arrays to numbers, it can do much more
 
 // Example 1
+import fs from 'fs';
+
+let output = fs.readFileSync('data.txt');
+
+console.log('output', output);
