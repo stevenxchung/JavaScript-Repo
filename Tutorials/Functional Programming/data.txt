@@ -1,0 +1,6 @@
+steven chung damascus knife 400 2
+steven chung ice pick 500 1
+steven chung yacht 500000 1
+Chef Steph wok 300 1
+Chef Steph mixer 50 1
+Chef Steph wine glass 4
