@@ -1,3 +1,4 @@
+// Observables
 let button = document.querySelector('button');
 
 // Old way
@@ -17,9 +18,11 @@ let button = document.querySelector('button');
 //   .subscribe(event => console.log(event));
 
 // Add map()
-const source = rxjs
-  .fromEvent(document, 'click')
-  .pipe(rxjs.operators.throttleTime(1000),
-  rxjs.operators.map((data) => { return data.clientY })
-  )
-  .subscribe(coodinate => console.log(coodinate));
+// const source = rxjs
+//   .fromEvent(document, 'click')
+//   .pipe(rxjs.operators.throttleTime(1000),
+//   rxjs.operators.map((data) => { return data.clientY })
+//   )
+//   .subscribe(coodinate => console.log(coodinate));
+
+// mergeMap()
