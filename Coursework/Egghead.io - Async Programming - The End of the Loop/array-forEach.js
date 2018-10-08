@@ -1,4 +1,4 @@
-// Classic For Loop
+// Classic for loop
 let getStockSymbols = stocks => {
   let symbols = [],
     counter,
@@ -20,7 +20,7 @@ let symbols = getStockSymbols([
 
 console.log(symbols);
 
-// forEach Method
+// forEach method
 let getStockSymbols = stocks => {
   let symbols = [];
   stocks.forEach(stock => {
