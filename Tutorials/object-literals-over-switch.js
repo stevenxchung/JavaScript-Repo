@@ -33,3 +33,36 @@ function getDrink(type) {
   }
   return "You've picked a " + type;
 }
+
+// Example 1 - Object literal
+function getDrink(type) {
+  var drinks = {
+    coke: 'Coke',
+    pepsi: 'Pepsi',
+    lemonade: 'Lemonade',
+    default: 'Default item'
+  };
+  return 'The drink I chose was ' + (drinks[type] || drinks['default']);
+}
+var drink = getDrink('coke');
+// The drink I chose was Coke
+console.log(drink);
+
+// Example 1 - Refactored
+function getDrink(type) {
+  var drinks = {
+    coke: function() {
+      return 'Coke';
+    },
+    pepsi: function() {
+      return 'Pepsi';
+    },
+    lemonade: function() {
+      return 'Lemonade';
+    }
+  };
+  return drinks[type]();
+}
+// let's call it
+var drink = getDrink('coke');
+console.log(drink); // 'Coke'
