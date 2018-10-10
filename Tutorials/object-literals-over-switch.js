@@ -66,3 +66,32 @@ function getDrink(type) {
 // let's call it
 var drink = getDrink('coke');
 console.log(drink); // 'Coke'
+
+// Example 1 - Add default drink
+function getDrink (type) {
+  var drink;
+  var drinks = {
+    'coke': function () {
+      drink = 'Coke';
+    },
+    'pepsi': function () {
+      drink = 'Pepsi';
+    },
+    'lemonade': function () {
+      drink = 'Lemonade';
+    },
+    'default': function () {
+      drink = 'Default item';
+    }
+  };
+
+  // invoke it
+  (drinks[type] || drinks['default'])();
+
+  // return a String with chosen drink
+  return 'The drink I chose was ' + drink;
+}
+
+var drink = getDrink('coke');
+// The drink I chose was Coke
+console.log(drink);
