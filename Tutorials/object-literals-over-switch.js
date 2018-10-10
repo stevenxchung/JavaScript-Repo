@@ -95,3 +95,41 @@ function getDrink (type) {
 var drink = getDrink('coke');
 // The drink I chose was Coke
 console.log(drink);
+
+// Example 2 - "Fall through" using switch
+var type = 'coke';
+var snack;
+switch(type) {
+case 'coke':
+case 'pepsi':
+  snack = 'Drink';
+  break;
+case 'cookies':
+case 'crisps':
+  snack = 'Food';
+  break;
+default:
+  drink = 'Unknown type!';
+}
+console.log(snack); // 'Drink'
+
+// Example 2 - Using object literals
+function getSnack (type) {
+  var snack;
+  function isDrink () {
+    return snack = 'Drink';
+  }
+  function isFood () {
+    return snack = 'Food';
+  }
+  var snacks = {
+    'coke': isDrink,
+    'pepsi': isDrink,
+    'cookies': isFood,
+    'crisps': isFood,
+  };
+  return snacks[type]();
+}
+
+var snack = getSnack('coke');
+console.log(snack); // 'Drink'
