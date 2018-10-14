@@ -1,4 +1,5 @@
 // Drag and Drop with Observables
+let RxOps = rxjs.operators;
 let parent = document.getElementById('parent');
 let widget = document.getElementById('widget');
 
@@ -15,19 +16,13 @@ let parentMouseUps = rxjs.fromEvent(parent, 'mouseup');
 //     concatAll();
 
 let drags = mouseDowns.pipe(
-  rxjs.operators.map(e => {
-    return parentMouseMoves.takeUntil(parentMouseUps);
+  RxOps.map(e => {
+    return parentMouseMoves.pipe(RxOps.takeUntil(parentMouseUps));
   }),
-  rxjs.operators.concatAll()
+  RxOps.concatAll()
 );
 
-let subscription = drags.forEach(
-  function onNext(e) {
-    widget.style.left = e.clientX + 'px';
-    widget.style.top = e.clientY + 'px';
-  },
-  function onError(error) {
-    console.log('error');
-  },
-  function onCompleted() {}
-);
+let subscription = drags.forEach(e => {
+  widget.style.left = e.clientX + 'px';
+  widget.style.top = e.clientY + 'px';
+});
