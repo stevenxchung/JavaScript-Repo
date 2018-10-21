@@ -1,17 +1,44 @@
 // Async without error handling
+// const fetch = require('node-fetch');
+
+// class GitHubApiClient {
+//   async fetchUser(handle) {
+//     const url = `https://api.github.com/users/${handle}`;
+//     const response = await fetch(url);
+//     return await response.json();
+//   }
+// }
+
+// (async () => {
+//   const client = new GitHubApiClient();
+//   const user = await client.fetchUser('stevenxchung');
+//   console.log(user.name);
+//   console.log(user.location);
+// })();
+
+// Async with error handling
 const fetch = require('node-fetch');
 
-class GitHubApiClient {
-  async fetchUser(handle) {
-    const url = `https://api.github.com/users/${handle}`;
-    const response = await fetch(url);
-    return await response.json();
+async function fetchUser(handle) {
+  const url = `https://api.github.com/users/${handle}`;
+  const response = await fetch(url);
+  const body = await response.json();
+
+  if (response.status !== 200) {
+    throw Error(body.message);
+  }
+
+  return body;
+}
+
+async function showGitHubUser(handle) {
+  try {
+    const user = await fetchGitHubUser(handle);
+    console.log(user.name);
+    console.log(user.location);
+  } catch (err) {
+    console.error(`Error: ${err.message}`);
   }
 }
 
-(async () => {
-  const client = new GitHubApiClient();
-  const user = await client.fetchUser('stevenxchung');
-  console.log(user.name);
-  console.log(user.location);
-})();
+showGitHubUser('stevenxchung');
