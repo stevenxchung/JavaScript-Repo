@@ -8,7 +8,11 @@ async function fetchFromGitHub(handle) {
 }
 
 async function showUserAndRepos(handle) {
+  const user = await fetchFromGitHub(`/users/${handle}`);
+  const repos = await fetchFromGitHub(`/users/${handle}/repos`)
 
+  console.log(user.name);
+  console.log(`${repos.length} repos`);
 }
 
 showUserAndRepos('stevenxchung');
