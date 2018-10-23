@@ -8,7 +8,16 @@ async function fetchFromGitHub(handle) {
 }
 
 async function showUserAndRepos(handle) {
+  Promise.all([
+    fetchFromGitHub(`/users/${handle}`),
+    fetchFromGitHub(`/users/${handle}/repos`),
+  ])
 
+  const user = results[0];
+  const repos = results[1];
+
+  console.log(user.name);
+  console.log(`${repos.length} repos`);
 }
 
 showUserAndRepos('stevenxchung');
