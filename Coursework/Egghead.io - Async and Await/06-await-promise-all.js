@@ -8,7 +8,7 @@ async function fetchFromGitHub(handle) {
 }
 
 async function showUserAndRepos(handle) {
-  Promise.all([
+  const results = Promise.all([
     fetchFromGitHub(`/users/${handle}`),
     fetchFromGitHub(`/users/${handle}/repos`),
   ])
