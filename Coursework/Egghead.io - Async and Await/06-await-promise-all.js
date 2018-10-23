@@ -1,4 +1,4 @@
-// Sequential http requests
+// Resolves after each promise within promise.all() is resolved
 const fetch = require('node-fetch');
 
 async function fetchFromGitHub(handle) {
