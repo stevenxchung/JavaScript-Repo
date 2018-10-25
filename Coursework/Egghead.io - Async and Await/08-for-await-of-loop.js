@@ -30,6 +30,7 @@ async function* someGenerator() {
 }
 
 function main() {
+  // Gets promise from someGenerator() and waits until promise has resolved
   for (const value of someGenerator()) {
     console.log(value);
   }
