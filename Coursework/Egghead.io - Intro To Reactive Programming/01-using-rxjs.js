@@ -29,3 +29,21 @@ const example3 = (() => {
     .reduce((x, y) => x + y);
   console.log('example 3:', result);
 })();
+
+// Example 4
+// Same as example 3 but asynchronous
+const example4 = (() => {
+  const source = rxjs.pipe(
+    rxjs.Observable,
+    rxjs.interval(500),
+    rxjs.operators.take(11),
+    rxjs.operators.map(
+      i => ['1', '2', '3', '4', '5', 'S', 't', 'e', 'v', 'e', 'n'][i]
+    )
+  );
+  const result = source
+    .map(x => parseInt(x))
+    .filter(x => !isNaN(x))
+    .reduce((x, y) => x + y);
+  result.subscribe(x => console.log('example 4:', x));
+})();
