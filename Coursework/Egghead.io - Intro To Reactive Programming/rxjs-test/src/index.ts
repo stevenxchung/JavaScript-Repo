@@ -13,13 +13,13 @@ const example1 = (() => {
   console.log('example 1:', result);
 })();
 
-// // Example 2
-// // Console log the array values asynchronously in 500 ms intervals
-// const example2 = (() => {
-//   const source = rxjs.interval(500).pipe(rxjs.operators.take(6));
-//   //output: 0,1,2,3,4,5....
-//   const subscribe = source.subscribe(val => console.log('example 2:', val));
-// })();
+// Example 2
+// Console log the array values asynchronously in 500 ms intervals
+const example2 = (() => {
+  const source = interval(500).pipe(take(6));
+  //output: 0,1,2,3,4,5....
+  const subscribe = source.subscribe(val => console.log('example 2:', val));
+})();
 
 // // Example 3
 // // Map out the array to ints then filter out all non ints and return the sum
