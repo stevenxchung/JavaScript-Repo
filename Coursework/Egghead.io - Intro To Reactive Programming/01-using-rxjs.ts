@@ -1,6 +1,10 @@
 // What is Reactive Programming?
 // Reactive programming is programming with event streams
 
+// Note: for imports to work, place in ./rxjs-test/src/index.ts and npm start in rxjs-test folder
+import { interval } from 'rxjs';
+import { take, map, filter, reduce } from 'rxjs/operators';
+
 console.clear();
 
 // Example 1
@@ -14,7 +18,7 @@ const example1 = (() => {
 // Example 2
 // Console log the array values asynchronously in 500 ms intervals
 const example2 = (() => {
-  const source = rxjs.interval(500).pipe(rxjs.operators.take(6));
+  const source = interval(500).pipe(take(6));
   //output: 0,1,2,3,4,5....
   const subscribe = source.subscribe(val => console.log('example 2:', val));
 })();
@@ -33,17 +37,14 @@ const example3 = (() => {
 // Example 4
 // Same as example 3 but asynchronous
 const example4 = (() => {
-  const source = rxjs.pipe(
-    rxjs.Observable,
-    rxjs.interval(500),
-    rxjs.operators.take(11),
-    rxjs.operators.map(
-      i => ['1', '2', '3', '4', '5', 'S', 't', 'e', 'v', 'e', 'n'][i]
-    )
+  const source = interval(500).pipe(
+    take(11),
+    map(i => ['1', '2', '3', '4', '5', 'S', 't', 'e', 'v', 'e', 'n'][i])
   );
-  const result = source
-    .map(x => parseInt(x))
-    .filter(x => !isNaN(x))
-    .reduce((x, y) => x + y);
+  const result = source.pipe(
+    map(x => parseInt(x)),
+    filter(x => !isNaN(x)),
+    reduce((x, y) => x + y)
+  );
   result.subscribe(x => console.log('example 4:', x));
 })();
