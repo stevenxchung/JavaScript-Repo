@@ -21,16 +21,16 @@ const example2 = (() => {
   const subscribe = source.subscribe(val => console.log('example 2:', val));
 })();
 
-// // Example 3
-// // Map out the array to ints then filter out all non ints and return the sum
-// const example3 = (() => {
-//   const source = ['1', '2', '3', '4', '5', 'S', 't', 'e', 'v', 'e', 'n'];
-//   const result = source
-//     .map(x => parseInt(x))
-//     .filter(x => !isNaN(x))
-//     .reduce((x, y) => x + y);
-//   console.log('example 3:', result);
-// })();
+// Example 3
+// Map out the array to ints then filter out all non ints and return the sum
+const example3 = (() => {
+  const source = ['1', '2', '3', '4', '5', 'S', 't', 'e', 'v', 'e', 'n'];
+  const result = source
+    .map(x => parseInt(x))
+    .filter(x => !isNaN(x))
+    .reduce((x, y) => x + y);
+  console.log('example 3:', result);
+})();
 
 // // Example 4
 // // Same as example 3 but asynchronous
