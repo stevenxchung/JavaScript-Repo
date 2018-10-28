@@ -1,7 +1,7 @@
 // All changes here will automatically refresh browser via webpack :)
 
 import { interval } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, map, filter, reduce } from 'rxjs/operators';
 
 console.clear();
 
@@ -32,20 +32,17 @@ const example3 = (() => {
   console.log('example 3:', result);
 })();
 
-// // Example 4
-// // Same as example 3 but asynchronous
-// const example4 = (() => {
-//   const source = rxjs.pipe(
-//     rxjs.Observable,
-//     rxjs.interval(500),
-//     rxjs.operators.take(11),
-//     rxjs.operators.map(
-//       i => ['1', '2', '3', '4', '5', 'S', 't', 'e', 'v', 'e', 'n'][i]
-//     )
-//   );
-//   const result = source
-//     .map(x => parseInt(x))
-//     .filter(x => !isNaN(x))
-//     .reduce((x, y) => x + y);
-//   result.subscribe(x => console.log('example 4:', x));
-// })();
+// Example 4
+// Same as example 3 but asynchronous
+const example4 = (() => {
+  const source = interval(500).pipe(
+    take(11),
+    map(i => ['1', '2', '3', '4', '5', 'S', 't', 'e', 'v', 'e', 'n'][i])
+  );
+  const result = source.pipe(
+    map(x => parseInt(x)),
+    filter(x => !isNaN(x)),
+    reduce((x, y) => x + y)
+  );
+  result.subscribe(x => console.log('example 4:', x));
+})();
