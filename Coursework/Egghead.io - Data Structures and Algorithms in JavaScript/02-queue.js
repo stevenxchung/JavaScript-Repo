@@ -27,20 +27,24 @@ let createQueue = () => {
 };
 
 // Tests
-const q = createQueue();
-console.log(q.isEmpty());
+// const q = createQueue();
+// console.log(q.isEmpty());
 
-q.enqueue('First');
-q.enqueue('Second');
-q.enqueue('Third');
+// q.enqueue('First');
+// q.enqueue('Second');
+// q.enqueue('Third');
 
-// Check out the last element (first element added)
-console.log(q.peek());
-// Remove the last item from the queue
-q.dequeue();
-console.log(q.peek());
-q.dequeue();
-console.log(q.peek());
-q.dequeue();
+// // Check out the last element (first element added)
+// console.log(q.peek());
+// // Remove the last item from the queue
+// q.dequeue();
+// console.log(q.peek());
+// q.dequeue();
+// console.log(q.peek());
+// q.dequeue();
 
-console.log(q.isEmpty());
+// console.log(q.isEmpty());
+
+module.exports = {
+  createQueue
+};
