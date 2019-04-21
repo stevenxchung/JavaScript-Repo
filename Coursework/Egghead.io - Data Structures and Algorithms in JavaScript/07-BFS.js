@@ -54,8 +54,33 @@ function createGraph(directed = false) {
           return result;
         })
         .join('\n');
-    }
+    },
+
     // Breadth First Search
+    breadthFirstSearch(startingNodeKey, visitFn) {
+      const startingNode = this.getNode(startingNodeKey);
+      const visited = nodes.reduce((acc, node) => {
+        acc[node.key] = false;
+        return acc;
+      }, {});
+      const queue = createQueue();
+      queue.enqueue(startingNode);
+
+      while (!queue.isEmpty()) {
+        const currentNode = queue.dequeue();
+
+        if (!visited[currentNode.key]) {
+          visitFn(currentNode);
+          visited[currentNode.key] = true;
+        }
+
+        currentNode.neighbors.forEach(node => {
+          if (!visited[node.key]) {
+            queue.enqueue(node);
+          }
+        });
+      }
+    }
   };
 }
 
