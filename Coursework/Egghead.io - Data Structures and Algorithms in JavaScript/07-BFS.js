@@ -106,5 +106,9 @@ edges.forEach(nodes => {
   graph.addEdge(...nodes);
 });
 
+graph.breadthFirstSearch('a', node => {
+  console.log(node.key);
+});
+
 exports.createNode = createNode;
 exports.createGraph = createGraph;
