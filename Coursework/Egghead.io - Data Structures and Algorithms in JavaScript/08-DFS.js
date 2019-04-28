@@ -2,7 +2,7 @@
 
 const { createQueue } = require('../queues/index.js');
 
-function createNode(key) {
+let createNode = key => {
   const children = [];
 
   return {
@@ -12,9 +12,9 @@ function createNode(key) {
       children.push(node);
     }
   };
-}
+};
 
-function createGraph(directed = false) {
+let createGraph = (directed = false) => {
   const nodes = [];
   const edges = [];
 
@@ -85,6 +85,27 @@ function createGraph(directed = false) {
     },
 
     // Depth First Search
-    
+    depthFirstSearch(startingNodeKey, visitFn) {
+      const startingNode = this.getNode(startingNode);
+      const visited = nodes.reduce((acc, node) => {
+        acc[node.key] = false;
+        return acc;
+      }, {});
+
+      let explore = node => {
+        if (visited[node.key]) {
+          return;
+        }
+
+        visitFn(node);
+        visited[node.key] = true;
+
+        node.neighbors.forEach(node => {
+          explore(node);
+        });
+
+        explore(startingNode);
+      };
+    }
   };
-}
+};
