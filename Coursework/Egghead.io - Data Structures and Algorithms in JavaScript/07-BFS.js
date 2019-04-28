@@ -2,7 +2,7 @@
 
 const { createQueue } = require('../queues/index.js');
 
-function createNode(key) {
+let createNode = (key) => {
   const children = [];
 
   return {
@@ -14,7 +14,7 @@ function createNode(key) {
   };
 }
 
-function createGraph(directed = false) {
+let createGraph = (directed = false) => {
   const nodes = [];
   const edges = [];
 
