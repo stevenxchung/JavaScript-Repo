@@ -1,3 +1,5 @@
+// Breadth First JavaScript Search Algorithm for Graphs
+
 const { createQueue } = require('../queues/index.js');
 
 function createNode(key) {
