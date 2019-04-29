@@ -1,8 +1,8 @@
 // Breadth First JavaScript Search Algorithm for Graphs
 
-const { createQueue } = require('../queues/index.js');
+const { createQueue } = require('./02-queue');
 
-let createNode = (key) => {
+let createNode = key => {
   const children = [];
 
   return {
@@ -12,7 +12,7 @@ let createNode = (key) => {
       children.push(node);
     }
   };
-}
+};
 
 let createGraph = (directed = false) => {
   const nodes = [];
@@ -58,11 +58,11 @@ let createGraph = (directed = false) => {
         .join('\n');
     },
 
-    // Breadth First Search
+    // Breath First Search
     breadthFirstSearch(startingNodeKey, visitFn) {
       const startingNode = this.getNode(startingNodeKey);
-      const visited = nodes.reduce((acc, node) => {
-        acc[node.key] = false;
+      const visitedHash = nodes.reduce((acc, cur) => {
+        acc[cur.key] = false;
         return acc;
       }, {});
       const queue = createQueue();
@@ -71,22 +71,21 @@ let createGraph = (directed = false) => {
       while (!queue.isEmpty()) {
         const currentNode = queue.dequeue();
 
-        if (!visited[currentNode.key]) {
+        if (!visitedHash[currentNode.key]) {
           visitFn(currentNode);
-          visited[currentNode.key] = true;
+          visitedHash[currentNode.key] = true;
         }
 
-        currentNode.neighbors.forEach(node => {
-          if (!visited[node.key]) {
+        currentNode.children.forEach(node => {
+          if (!visitedHash[node.key]) {
             queue.enqueue(node);
           }
         });
       }
     }
   };
-}
+};
 
-// Tests
 const graph = createGraph(true);
 const nodes = ['a', 'b', 'c', 'd', 'e', 'f'];
 const edges = [
