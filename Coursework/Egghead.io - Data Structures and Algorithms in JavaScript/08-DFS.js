@@ -1,6 +1,6 @@
 // Depth First Search Algorithm for Graphs in JavaScript
 
-const { createQueue } = require('../queues/index.js');
+const { createQueue } = require('./02-queue');
 
 let createNode = key => {
   const children = [];
@@ -58,11 +58,11 @@ let createGraph = (directed = false) => {
         .join('\n');
     },
 
-    // Breadth First Search
+    // Breath First Search
     breadthFirstSearch(startingNodeKey, visitFn) {
       const startingNode = this.getNode(startingNodeKey);
-      const visited = nodes.reduce((acc, node) => {
-        acc[node.key] = false;
+      const visitedHash = nodes.reduce((acc, cur) => {
+        acc[cur.key] = false;
         return acc;
       }, {});
       const queue = createQueue();
@@ -71,13 +71,13 @@ let createGraph = (directed = false) => {
       while (!queue.isEmpty()) {
         const currentNode = queue.dequeue();
 
-        if (!visited[currentNode.key]) {
+        if (!visitedHash[currentNode.key]) {
           visitFn(currentNode);
-          visited[currentNode.key] = true;
+          visitedHash[currentNode.key] = true;
         }
 
-        currentNode.neighbors.forEach(node => {
-          if (!visited[node.key]) {
+        currentNode.children.forEach(node => {
+          if (!visitedHash[node.key]) {
             queue.enqueue(node);
           }
         });
@@ -86,26 +86,55 @@ let createGraph = (directed = false) => {
 
     // Depth First Search
     depthFirstSearch(startingNodeKey, visitFn) {
-      const startingNode = this.getNode(startingNode);
-      const visited = nodes.reduce((acc, node) => {
-        acc[node.key] = false;
+      const startingNode = this.getNode(startingNodeKey);
+      const visitedHash = nodes.reduce((acc, cur) => {
+        acc[cur.key] = false;
         return acc;
       }, {});
 
-      let explore = node => {
-        if (visited[node.key]) {
+      function explore(node) {
+        if (visitedHash[node.key]) {
           return;
         }
 
         visitFn(node);
-        visited[node.key] = true;
+        visitedHash[node.key] = true;
 
-        node.neighbors.forEach(node => {
-          explore(node);
+        node.children.forEach(child => {
+          explore(child);
         });
+      }
 
-        explore(startingNode);
-      };
+      explore(startingNode);
     }
   };
 };
+
+// Tests
+const graph = createGraph(true);
+const nodes = ['a', 'b', 'c', 'd', 'e', 'f'];
+const edges = [
+  ['a', 'b'],
+  ['a', 'e'],
+  ['a', 'f'],
+  ['b', 'd'],
+  ['b', 'e'],
+  ['c', 'b'],
+  ['d', 'c'],
+  ['d', 'e']
+];
+
+nodes.forEach(node => {
+  graph.addNode(node);
+});
+
+edges.forEach(nodes => {
+  graph.addEdge(...nodes);
+});
+
+graph.depthFirstSearch('a', node => {
+  console.log(node.key);
+});
+
+exports.createNode = createNode;
+exports.createGraph = createGraph;
