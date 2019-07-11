@@ -8,7 +8,7 @@ let executeBFS = (graph, source) => {
   while (queue.length > 0) {
     // Dequeue node from queue each time
     let currentNode = queue.pop();
-    console.log(currentNode);
+    console.log('current node', currentNode);
     nodesTraversed.push(currentNode);
     for (let i = 0; i < graph[currentNode].length; i++) {
       let neighbor = graph[currentNode][i];
