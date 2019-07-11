@@ -1,6 +1,24 @@
 // Given a graph and source, returns an array of node numbers in BFS order
 let executeBFS = (graph, source) => {
   let nodesTraversed = [];
+  let queue = [];
+  // Enqueue source to beginning of array
+  queue.unshift(source);
+  // Continue until queue is empty
+  while (queue.length > 0) {
+    // Dequeue node from queue each time
+    let currentNode = queue.pop();
+    console.log(currentNode);
+    nodesTraversed.push(currentNode);
+    for (let i = 0; i < graph[currentNode].length; i++) {
+      let neighbor = graph[currentNode][i];
+      if (!nodesTraversed.includes(neighbor)) {
+        console.log('neighbor', neighbor);
+        queue.unshift(graph[currentNode][i]);
+      }
+    }
+  }
+
   return nodesTraversed;
 };
 
