@@ -13,8 +13,10 @@ let executeBFS = (graph, source) => {
       if (!nodesTraversed.includes(neighbor)) {
         console.log('neighbor', neighbor);
         queue.unshift(graph[currentNode][i]);
-        console.log('current node', currentNode);
-        nodesTraversed.push(currentNode);
+        if (!nodesTraversed.includes(currentNode)) {
+          nodesTraversed.push(currentNode);
+          console.log('current node', currentNode);
+        }
       }
     }
   }
