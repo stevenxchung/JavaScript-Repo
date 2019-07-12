@@ -14,6 +14,7 @@ let executeBFS = (graph, source) => {
         console.log('neighbor', neighbor);
         queue.unshift(graph[currentNode][i]);
         if (!nodesTraversed.includes(currentNode)) {
+          // Only push current node to nodesTraversed array once
           nodesTraversed.push(currentNode);
           console.log('current node', currentNode);
         }
