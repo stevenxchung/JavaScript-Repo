@@ -11,12 +11,12 @@ let executeBFS = (graph, source) => {
     for (let i = 0; i < graph[currentNode].length; i++) {
       let neighbor = graph[currentNode][i];
       if (!nodesTraversed.includes(neighbor)) {
+        console.log('current node', currentNode);
         console.log('neighbor', neighbor);
         queue.unshift(graph[currentNode][i]);
         if (!nodesTraversed.includes(currentNode)) {
           // Only push current node to nodesTraversed array once
           nodesTraversed.push(currentNode);
-          console.log('current node', currentNode);
         }
       }
     }
@@ -36,7 +36,7 @@ const graph = [
   [3, 5], // 6
   [] // 7
 ];
-console.log(executeBFS(graph, 0)); // [0, 1, 4, 5, 2, 6, 3, 7]
+console.log(executeBFS(graph, 0)); // [0, 1, 4, 5, 2, 6]
 
 // [
 //   { distance: 0, predecessor: null },
