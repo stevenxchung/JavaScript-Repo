@@ -6,6 +6,7 @@ let executeBFS = (graph, source) => {
   queue.unshift(source);
   // Continue until queue is empty
   while (queue.length > 0) {
+    console.log('queue', queue);
     // Dequeue node from queue each time
     let currentNode = queue.pop();
     for (let i = 0; i < graph[currentNode].length; i++) {
@@ -13,7 +14,7 @@ let executeBFS = (graph, source) => {
       if (!nodesTraversed.includes(neighbor)) {
         console.log('current node', currentNode);
         console.log('neighbor', neighbor);
-        queue.unshift(graph[currentNode][i]);
+        queue.unshift(neighbor);
         if (!nodesTraversed.includes(currentNode)) {
           // Only push current node to nodesTraversed array once
           nodesTraversed.push(currentNode);
