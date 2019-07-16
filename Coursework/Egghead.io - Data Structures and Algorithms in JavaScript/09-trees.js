@@ -18,7 +18,29 @@ let createTree = rootKey => {
   const root = createNode(rootKey);
 
   return {
-    root
+    root,
+    print() {
+      let result = '';
+
+      function traverse(node, visitFn, depth) {
+        visitFn(node, depth);
+        if (node.children.length) {
+          node.children.forEach(child => {
+            traverse(child, visitFn, depth + 1);
+          });
+        }
+      }
+      function addKeyToResult(node, depth) {
+        result +=
+          result.length === 0
+            ? node.key
+            : `\n${' '.repeat(depth * 2)}${node.key}`;
+      }
+
+      traverse(root, addKeyToResult, 1);
+
+      return result;
+    }
   };
 };
 
