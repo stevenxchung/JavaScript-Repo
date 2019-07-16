@@ -54,3 +54,6 @@ const footer = body.addChild('footer');
 const h1 = header.addChild('h1 - Tree Lesson');
 const p = main.addChild('p - learn about trees!');
 const copyright = footer.addChild(`Copyright ${new Date().getFullYear()}`);
+
+// Test
+console.log(dom.print());
