@@ -20,3 +20,9 @@ const accounts = [
     roleName: 'EAP Admin Role 002'
   }
 ];
+
+// export interface Product = {
+//     productName: string
+//     productIcon: string
+//     accounts: Accounts[]
+// };
