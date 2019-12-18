@@ -23,7 +23,7 @@ const accounts = [
 
 const productNames = ['Knights', 'Dragons'];
 
-const productIcon = ['K', 'D'];
+const productIcons = ['K', 'D'];
 
 // export interface Product = {
 //     productName: string
@@ -40,6 +40,34 @@ let createProductMap = accounts => {
   );
 
   // console.log({ accountsFirst, accountsSecond });
+
+  productNames.map(name => {
+    // console.log(name);
+    const matchingIcon = name === 'Knights' ? productIcons[0] : productIcons[1];
+    const matchingAccounts =
+      name === 'Knights' ? accountsFirst : accountsSecond;
+    console.log({
+      name,
+      matchingIcon,
+      matchingAccounts
+    });
+    return {
+      name,
+      matchingIcon,
+      matchingAccounts
+    };
+  });
+
+  // return productNames.map(name => {
+  //   const matchingIcon = name === 'Knights' ? productIcons[0] : productIcons[1];
+  //   const matchingAccounts =
+  //     name === 'Knights' ? accountsFirst : accountsSecond;
+  //   return {
+  //     name,
+  //     matchingIcon,
+  //     matchingAccounts
+  //   };
+  // });
 };
 
 // Testing
