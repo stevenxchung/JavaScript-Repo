@@ -56,7 +56,7 @@ class Solution {
       });
     });
     console.log(
-      `Runtime for solution: ${(performance.now() - solStart) / 1000}`
+      `Runtime for solution: ${(performance.now() - solStart) / 1000}\n`
     );
 
     const refStart = performance.now();
