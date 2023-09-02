@@ -2,7 +2,7 @@
 *Custom problem
 Given a series of strings, find the string where the distances between each neighboring character in the string is different from the rest of the strings.
 */
-const { performance } = require('perf_hooks');
+const { performance } = require("perf_hooks");
 
 class Solution {
   method(strs) {
@@ -35,7 +35,7 @@ class Solution {
   quantify(testCases, runs = 100000) {
     const runsArr = Array.from({ length: runs });
     const solStart = performance.now();
-    runsArr.map((run, i) => {
+    runsArr.map((_, i) => {
       testCases.map((input) => {
         if (i === 0) console.log(this.method(input));
         else this.method(input);
@@ -48,5 +48,5 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [['ABC', 'DEF', 'GHI', 'QWE']];
+const testCases = [["ABC", "DEF", "GHI", "QWE"]];
 test.quantify(testCases);

@@ -32,33 +32,33 @@ interface Employee {
 // Michael      Snr. Accountant
 // Task 2: Fill in here
 const aaron: Employee = {
-  name: 'Aaron',
-  title: 'Developer',
+  name: "Aaron",
+  title: "Developer",
   directs: [],
 };
 const liz: Employee = {
-  name: 'Liz',
-  title: 'DevOps Eng',
+  name: "Liz",
+  title: "DevOps Eng",
   directs: [],
 };
 const matt: Employee = {
-  name: 'Matt',
-  title: 'VP Dev',
+  name: "Matt",
+  title: "VP Dev",
   directs: [aaron],
 };
 const sam: Employee = {
-  name: 'Sam',
-  title: 'VP Eng',
+  name: "Sam",
+  title: "VP Eng",
   directs: [liz],
 };
 const bob: Employee = {
-  name: 'Bob',
-  title: 'CTO',
+  name: "Bob",
+  title: "CTO",
   directs: [sam, matt],
 };
 const jessica: Employee = {
-  name: 'Jessica',
-  title: 'CEO',
+  name: "Jessica",
+  title: "CEO",
   directs: [bob],
 };
 // you can add additional variables to fill in the remainder of the data.
@@ -95,23 +95,19 @@ function consoleLogCompanyHierarchy(employee: Employee) {
     const [node, level] = queue.shift();
 
     if (prevLevel !== level) {
-      prevLevel = level
-      console.log('*********** NEW COMPANY LEVEL ***********')
+      prevLevel = level;
+      console.log("*********** NEW COMPANY LEVEL ***********");
     }
 
     if (node.directs.length > 0) {
-      const directs = node.directs
-        .map((e) => e.name)
-        .join(', ');
+      const directs = node.directs.map((e) => e.name).join(", ");
       console.log(`${node.name} (${node.title}) - ${directs}`);
       for (const direct of node.directs) {
-        queue.push([direct, level + 1])
+        queue.push([direct, level + 1]);
       }
-
     } else {
       console.log(`${node.name} (${node.title})`);
     }
-
   }
 }
 consoleLogCompanyHierarchy(jessica);
