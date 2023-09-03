@@ -1,42 +1,41 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  method(numbers, target) {
-    let [l, r] = [0, numbers.length - 1];
-    while (l < r) {
-      const res = numbers[l] + numbers[r];
-      if (res > target) r -= 1;
-      else if (res < target) l += 1;
-      else return [l + 1, r + 1];
+  method(strings) {
+    if (strings.length === 0) {
+      return [""];
     }
-  }
+    /*
+    hashmap -> 26 char code, append to hashmap
+    return hashmap values
+    */
 
-  reference(numbers, target) {
-    let [left, right] = [0, numbers.length - 1];
-
-    while (left < right) {
-      const sum = numbers[left] + numbers[right];
-
-      const isTarget = sum === target;
-      if (isTarget) return [left + 1, right + 1];
-
-      const isTargetGreater = sum < target;
-      if (isTargetGreater) left++;
-
-      const isTargetLess = target < sum;
-      if (isTargetLess) right--;
+    const table = {};
+    for (const s of strings) {
+      const code = new Array(26).fill(0);
+      for (const c of s) {
+        code[c.charCodeAt(0) - "a".charCodeAt(0)] += 1;
+      }
+      const codeAsStr = code.join(",");
+      if (!table[codeAsStr]) {
+        table[codeAsStr] = [s];
+      } else {
+        table[codeAsStr].push(s);
+      }
     }
 
-    return [-1, -1];
+    return Object.values(table);
   }
+
+  reference() {}
 
   quantify(testCases, runs = 100000) {
     const runsArr = Array.from({ length: runs });
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(...input));
-        else this.method(...input);
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
       });
     });
     console.log(
@@ -46,8 +45,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(...input));
-        else this.reference(...input);
+        if (i === 0) console.log(this.reference(input));
+        else this.reference(input);
       });
     });
     console.log(
@@ -57,9 +56,5 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [
-  [[2, 7, 11, 15], 9],
-  [[2, 3, 4], 6],
-  [[-1, 0], -1],
-];
+const testCases = [["eat", "tea", "tan", "ate", "nat", "bat"], [""], ["a"]];
 test.quantify(testCases);
