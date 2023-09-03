@@ -1,38 +1,37 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  method(nums, k) {
+  method(nums) {
     /* 
-    table {number : count}
-    loop table -> insert into heap
+    prefix and postfix = 1
+    loop forward and store in output
+    loop backward and store in output
     */
-    const res = [];
-    const table = {};
-    const bucket = Array.from({ length: nums.length + 1 }, () => []);
-
-    for (const n of nums) {
-      table[n] = table[n] ? table[n] + 1 : 1;
+    const res = new Array(nums.length).fill(1);
+    let pre = 1;
+    for (let i = 1; i < nums.length; i++) {
+      res[i] = pre * nums[i - 1];
+      pre = res[i];
     }
 
-    for (const [n, count] of Object.entries(table)) {
-      bucket[count].push(n);
+    let post = 1;
+    for (let i = nums.length - 2; i >= 0; i--) {
+      post *= nums[i + 1];
+      res[i] *= post;
     }
 
-    for (let i = bucket.length - 1; i >= 0; i--) {
-      if (bucket[i].length > 0) bucket[i].map((e) => res.push(e));
-      if (k === res.length) return res;
-    }
+    return res;
   }
 
   reference() {}
 
-  quantify(testCases, runs = 100000) {
+  quantify(testCases, runs = 1e6) {
     const runsArr = Array.from({ length: runs });
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(...input));
-        else this.method(...input);
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
       });
     });
     console.log(
@@ -42,8 +41,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(...input));
-        else this.reference(...input);
+        if (i === 0) console.log(this.reference(input));
+        else this.reference(input);
       });
     });
     console.log(
@@ -54,7 +53,7 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [[1, 1, 1, 2, 2, 3], 2],
-  [[1], 1],
+  [1, 2, 3, 4],
+  [-1, 1, 0, -3, 3],
 ];
 test.quantify(testCases);
