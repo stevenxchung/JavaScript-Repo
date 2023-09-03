@@ -1,30 +1,27 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  method(strings) {
-    if (strings.length === 0) {
-      return [""];
-    }
-    /*
-    hashmap -> 26 char code, append to hashmap
-    return hashmap values
+  method(nums, k) {
+    /* 
+    table {number : count}
+    loop table -> insert into heap
     */
-
+    const res = [];
     const table = {};
-    for (const s of strings) {
-      const code = new Array(26).fill(0);
-      for (const c of s) {
-        code[c.charCodeAt(0) - "a".charCodeAt(0)] += 1;
-      }
-      const codeAsStr = code.join(",");
-      if (!table[codeAsStr]) {
-        table[codeAsStr] = [s];
-      } else {
-        table[codeAsStr].push(s);
-      }
+    const bucket = Array.from({ length: nums.length + 1 }, () => []);
+
+    for (const n of nums) {
+      table[n] = table[n] ? table[n] + 1 : 1;
     }
 
-    return Object.values(table);
+    for (const [n, count] of Object.entries(table)) {
+      bucket[count].push(n);
+    }
+
+    for (let i = bucket.length - 1; i >= 0; i--) {
+      if (bucket[i].length > 0) bucket[i].map((e) => res.push(e));
+      if (k === res.length) return res;
+    }
   }
 
   reference() {}
@@ -34,8 +31,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(input));
-        else this.method(input);
+        if (i === 0) console.log(this.method(...input));
+        else this.method(...input);
       });
     });
     console.log(
@@ -45,8 +42,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(input));
-        else this.reference(input);
+        if (i === 0) console.log(this.reference(...input));
+        else this.reference(...input);
       });
     });
     console.log(
@@ -56,5 +53,8 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [["eat", "tea", "tan", "ate", "nat", "bat"], [""], ["a"]];
+const testCases = [
+  [[1, 1, 1, 2, 2, 3], 2],
+  [[1], 1],
+];
 test.quantify(testCases);
