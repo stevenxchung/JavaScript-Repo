@@ -1,18 +1,25 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  _encode(input) {
-    return input.join("#");
-  }
+  method(nums) {
+    /*
+    convert input to set
+    check if element start of sequence
+    increment and check set -> update longest sequence
+    */
+    const seen = new Set(nums);
+    let longestSequence = 0;
+    for (const num of seen) {
+      if (seen.has(num - 1)) continue;
 
-  _decode(input) {
-    return input.split("#");
-  }
+      let count = 1;
+      while (seen.has(num + count)) {
+        count++;
+      }
+      longestSequence = Math.max(longestSequence, count);
+    }
 
-  method(input) {
-    const encoded = this._encode(input);
-    const decoded = this._decode(encoded);
-    return [encoded, decoded];
+    return longestSequence;
   }
 
   reference() {}
@@ -45,7 +52,7 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  ["lint", "code", "love", "you"],
-  ["we", "say", ":", "yes"],
+  [100, 4, 200, 1, 3, 2],
+  [0, 3, 7, 2, 5, 8, 4, 6, 0, 1],
 ];
 test.quantify(testCases);
