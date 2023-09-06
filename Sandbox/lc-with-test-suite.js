@@ -1,40 +1,22 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  method(nums) {
+  method(height) {
     /*
-    sort input
-    one main loop
-    two pointer search
-    use set to track triplets
+    two pointers at ends of array
+    determine max area at each step
+    move pointers inward by lesser height
     */
-    nums.sort();
-    const res = [];
-    const seen = new Set();
-
-    for (const [i, a] of nums.entries()) {
-      // Skip since value already exists
-      if (seen.has(a)) continue;
-
-      // Two pointer search
-      let [l, r] = [i + 1, nums.length - 1];
-      while (l < r) {
-        const [b, c] = [nums[l], nums[r]];
-        const sum = a + b + c;
-
-        if (sum === 0) {
-          res.push([a, b, c]);
-          l++;
-          // Ensure that value is different to avoid duplicates
-          while (seen.has(b) && l < r) l++;
-        } else if (sum < 0) l++;
-        else if (sum > 0) r--;
-      }
-      // Add value to seen
-      seen.add(a);
+    let [l, r] = [0, height.length - 1];
+    let maxArea = 0;
+    while (l < r) {
+      const area = (r - l) * Math.min(height[l], height[r]);
+      maxArea = Math.max(maxArea, area);
+      if (height[l] < height[r]) l++;
+      else r--;
     }
 
-    return res;
+    return maxArea;
   }
 
   reference() {}
@@ -67,8 +49,7 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [-1, 0, 1, 2, -1, -4],
-  [0, 1, 1],
-  [0, 0, 0],
+  [1, 8, 6, 2, 5, 4, 8, 3, 7],
+  [1, 1],
 ];
 test.quantify(testCases);
