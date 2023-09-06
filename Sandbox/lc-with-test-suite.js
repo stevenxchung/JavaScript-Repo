@@ -1,47 +1,51 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  method(numbers, target) {
+  method(nums) {
     /*
-    use two pointers at ends of input array
-    loop until target is found
+    sort input
+    one main loop
+    two pointer search
+    use set to track triplets
     */
-    let [l, r] = [0, numbers.length - 1];
+    nums.sort();
+    const res = [];
+    const seen = new Set();
 
-    while (l < r) {
-      const sum = numbers[l] + numbers[r];
-      if (sum === target) return [l + 1, r + 1];
-      else if (sum < target) l++; // Go towards bigger numbers
-      else r--; // Go towards smaller numbers
+    for (const [i, a] of nums.entries()) {
+      // Skip since value already exists
+      if (seen.has(a)) continue;
+
+      // Two pointer search
+      let [l, r] = [i + 1, nums.length - 1];
+      while (l < r) {
+        const [b, c] = [nums[l], nums[r]];
+        const sum = a + b + c;
+
+        if (sum === 0) {
+          res.push([a, b, c]);
+          l++;
+          // Ensure that value is different to avoid duplicates
+          while (seen.has(b) && l < r) l++;
+        } else if (sum < 0) l++;
+        else if (sum > 0) r--;
+      }
+      // Add value to seen
+      seen.add(a);
     }
+
+    return res;
   }
 
-  reference(numbers, target) {
-    let [left, right] = [0, numbers.length - 1];
-
-    while (left < right) {
-      const sum = numbers[left] + numbers[right];
-
-      const isTarget = sum === target;
-      if (isTarget) return [left + 1, right + 1];
-
-      const isTargetGreater = sum < target;
-      if (isTargetGreater) left++;
-
-      const isTargetLess = target < sum;
-      if (isTargetLess) right--;
-    }
-
-    return [-1, -1];
-  }
+  reference() {}
 
   quantify(testCases, runs = 1e6) {
     const runsArr = Array.from({ length: runs });
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(...input));
-        else this.method(...input);
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
       });
     });
     console.log(
@@ -51,8 +55,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(...input));
-        else this.reference(...input);
+        if (i === 0) console.log(this.reference(input));
+        else this.reference(input);
       });
     });
     console.log(
@@ -63,8 +67,8 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [[2, 7, 11, 15], 9],
-  [[2, 3, 4], 6],
-  [[-1, 0], -1],
+  [-1, 0, 1, 2, -1, -4],
+  [0, 1, 1],
+  [0, 0, 0],
 ];
 test.quantify(testCases);
