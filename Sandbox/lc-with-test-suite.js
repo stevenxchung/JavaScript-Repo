@@ -1,26 +1,37 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  method(s) {
+  method(s, k) {
     /*
     sliding window
-    use set() to track seen characters
-    expand window until duplicate reached
-    shrink window by left pointer until duplicate removed
+    table to track unique chars and count
+    track longest char
+    expand right when char count within limit
+    shrink left when char count exceeds limit
     */
+
     let l = 0;
-    let maxLen = 0;
-    const seen = new Set();
+    let mostFreqChar = s[0];
+    let longestStrLen = 0;
+    const charMap = {};
     for (let r = 0; r < s.length; r++) {
-      while (seen.has(s[r])) {
-        seen.delete(s[l]);
+      const char = s[r];
+      !charMap[char] ? (charMap[char] = 1) : charMap[char]++;
+
+      if (charMap[char] > charMap[mostFreqChar]) mostFreqChar = char;
+
+      const subStrLen = r - l + 1;
+      const kNeeded = subStrLen - charMap[mostFreqChar];
+      // Replacement met, set longest substring length
+      if (k === kNeeded) longestStrLen = Math.max(longestStrLen, subStrLen);
+      else if (k < kNeeded) {
+        // Decrement count and shrink window
+        charMap[s[l]]--;
         l++;
       }
-      seen.add(s[r]);
-      maxLen = Math.max(maxLen, seen.size);
     }
 
-    return maxLen;
+    return longestStrLen;
   }
 
   reference() {}
@@ -30,8 +41,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(input));
-        else this.method(input);
+        if (i === 0) console.log(this.method(...input));
+        else this.method(...input);
       });
     });
     console.log(
@@ -41,8 +52,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(input));
-        else this.reference(input);
+        if (i === 0) console.log(this.reference(...input));
+        else this.reference(...input);
       });
     });
     console.log(
@@ -52,5 +63,8 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = ["abcabcbb", "bbbbb", "pwwkew"];
+const testCases = [
+  ["ABAB", 2],
+  ["AABABBA", 1],
+];
 test.quantify(testCases);
