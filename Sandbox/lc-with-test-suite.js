@@ -1,22 +1,26 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  method(height) {
+  method(s) {
     /*
-    two pointers at ends of array
-    determine max area at each step
-    move pointers inward by lesser height
+    sliding window
+    use set() to track seen characters
+    expand window until duplicate reached
+    shrink window by left pointer until duplicate removed
     */
-    let [l, r] = [0, height.length - 1];
-    let maxArea = 0;
-    while (l < r) {
-      const area = (r - l) * Math.min(height[l], height[r]);
-      maxArea = Math.max(maxArea, area);
-      if (height[l] < height[r]) l++;
-      else r--;
+    let l = 0;
+    let maxLen = 0;
+    const seen = new Set();
+    for (let r = 0; r < s.length; r++) {
+      while (seen.has(s[r])) {
+        seen.delete(s[l]);
+        l++;
+      }
+      seen.add(s[r]);
+      maxLen = Math.max(maxLen, seen.size);
     }
 
-    return maxArea;
+    return maxLen;
   }
 
   reference() {}
@@ -48,8 +52,5 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [
-  [1, 8, 6, 2, 5, 4, 8, 3, 7],
-  [1, 1],
-];
+const testCases = ["abcabcbb", "bbbbb", "pwwkew"];
 test.quantify(testCases);
