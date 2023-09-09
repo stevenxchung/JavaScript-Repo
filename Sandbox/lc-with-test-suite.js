@@ -1,37 +1,34 @@
 const { performance } = require("perf_hooks");
 
 class Solution {
-  method(s, k) {
+  _tableMatches(a, b) {
+    return Object.keys(a).every((k) => a[k] === b[k]);
+  }
+
+  method(s1, s2) {
     /*
-    sliding window
-    table to track unique chars and count
-    track longest char
-    expand right when char count within limit
-    shrink left when char count exceeds limit
+    two tables to track chars one for s1 and one for s2
+    sliding window of size s1
+    add and remove chars while sliding
     */
-
     let l = 0;
-    let mostFreqChar = s[0];
-    let longestStrLen = 0;
-    const charMap = {};
-    for (let r = 0; r < s.length; r++) {
-      const char = s[r];
-      !charMap[char] ? (charMap[char] = 1) : charMap[char]++;
+    // Build initial tables
+    const [known, seen] = [{}, {}];
+    for (const c of s1) {
+      known[c] ? known[c]++ : (known[c] = 1);
+    }
+    seen[s2[l]] ? seen[s2[l]]++ : (seen[s2[l]] = 1);
 
-      if (charMap[char] > charMap[mostFreqChar]) mostFreqChar = char;
-
-      const subStrLen = r - l + 1;
-      const kNeeded = subStrLen - charMap[mostFreqChar];
-      // Replacement met, set longest substring length
-      if (k === kNeeded) longestStrLen = Math.max(longestStrLen, subStrLen);
-      else if (k < kNeeded) {
-        // Decrement count and shrink window
-        charMap[s[l]]--;
-        l++;
-      }
+    for (let r = 1; r < s2.length; r++) {
+      const [c2l, c2r] = [s2[l], s2[r]];
+      seen[c2r] ? seen[c2r]++ : (seen[c2r] = 1);
+      if (this._tableMatches(known, seen)) return true;
+      // Remove from table based on left pointer
+      seen[c2l] > 1 ? seen[c2l]-- : (seen[c2l] = 0);
+      l++;
     }
 
-    return longestStrLen;
+    return false;
   }
 
   reference() {}
@@ -64,7 +61,9 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  ["ABAB", 2],
-  ["AABABBA", 1],
+  ["ab", "eidbaooo"],
+  ["ab", "eidboaoo"],
+  // Additional
+  ["hello", "ooolleoooleh"],
 ];
 test.quantify(testCases);
