@@ -1,31 +1,32 @@
 const { performance } = require("perf_hooks");
 
+/*
+  - Binary search by row then by values in row
+  - Leverage sorted input values to compare target
+*/
 class Solution {
-  _tableMatches(a, b) {
-    return Object.keys(a).every((k) => a[k] === b[k]);
-  }
-
-  method(s1, s2) {
-    /*
-    two tables to track chars one for s1 and one for s2
-    sliding window of size s1
-    add and remove chars while sliding
-    */
-    let l = 0;
-    // Build initial tables
-    const [known, seen] = [{}, {}];
-    for (const c of s1) {
-      known[c] ? known[c]++ : (known[c] = 1);
+  method(matrix, target) {
+    let COLS = matrix[0].length;
+    // Find row where target could exist
+    let targetRowIndex = null;
+    for (const [i, row] of matrix.entries()) {
+      if (target >= row[0] || target <= row[COLS - 1]) {
+        targetRowIndex = i;
+        break;
+      }
     }
-    seen[s2[l]] ? seen[s2[l]]++ : (seen[s2[l]] = 1);
 
-    for (let r = 1; r < s2.length; r++) {
-      const [c2l, c2r] = [s2[l], s2[r]];
-      seen[c2r] ? seen[c2r]++ : (seen[c2r] = 1);
-      if (this._tableMatches(known, seen)) return true;
-      // Remove from table based on left pointer
-      seen[c2l] > 1 ? seen[c2l]-- : (seen[c2l] = 0);
-      l++;
+    // Target does not exist
+    if (targetRowIndex === null) return false;
+
+    // Proceed to binary search row
+    let [l, r] = [0, COLS - 1];
+    while (l <= r) {
+      const mid = Math.floor((l + r) / 2);
+      const row = matrix[targetRowIndex];
+      if (row[mid] === target) return true;
+      else if (row[mid] < target) r = mid - 1;
+      else l = mid + 1;
     }
 
     return false;
@@ -61,9 +62,21 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  ["ab", "eidbaooo"],
-  ["ab", "eidboaoo"],
-  // Additional
-  ["hello", "ooolleoooleh"],
+  [
+    [
+      [1, 3, 5, 7],
+      [10, 11, 16, 20],
+      [23, 30, 34, 60],
+    ],
+    3,
+  ],
+  [
+    [
+      [1, 3, 5, 7],
+      [10, 11, 16, 20],
+      [23, 30, 34, 60],
+    ],
+    13,
+  ],
 ];
 test.quantify(testCases);
