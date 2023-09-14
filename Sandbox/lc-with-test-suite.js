@@ -1,35 +1,38 @@
 const { performance } = require("perf_hooks");
 
 /*
-  - Binary search by row then by values in row
-  - Leverage sorted input values to compare target
+  - Use stack to track element order
+  - When operator detected, perform operation on top two elements
+  - Add back result to top of stack
+  - When input is fully indexed, answer is on top of stack
 */
 class Solution {
-  method(matrix, target) {
-    let COLS = matrix[0].length;
-    // Find row where target could exist
-    let targetRowIndex = null;
-    for (const [i, row] of matrix.entries()) {
-      if (target >= row[0] || target <= row[COLS - 1]) {
-        targetRowIndex = i;
-        break;
+  method(tokens) {
+    const stack = [];
+    for (const t of tokens) {
+      if (t !== "+" && t !== "-" && t !== "*" && t !== "/") {
+        stack.push(t);
+        continue;
+      }
+
+      const [a, b] = [stack.pop(), stack.pop()];
+      switch (t) {
+        case "+":
+          stack.push(parseInt(a) + parseInt(b));
+          break;
+        case "-":
+          stack.push(parseInt(b) - parseInt(a));
+          break;
+        case "*":
+          stack.push(parseInt(a) * parseInt(b));
+          break;
+        case "/":
+          stack.push(parseInt(b) / parseInt(a));
+          break;
       }
     }
 
-    // Target does not exist
-    if (targetRowIndex === null) return false;
-
-    // Proceed to binary search row
-    let [l, r] = [0, COLS - 1];
-    while (l <= r) {
-      const mid = Math.floor((l + r) / 2);
-      const row = matrix[targetRowIndex];
-      if (row[mid] === target) return true;
-      else if (row[mid] < target) r = mid - 1;
-      else l = mid + 1;
-    }
-
-    return false;
+    return stack.length > 0 ? stack[0] : null;
   }
 
   reference() {}
@@ -39,8 +42,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(...input));
-        else this.method(...input);
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
       });
     });
     console.log(
@@ -50,8 +53,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(...input));
-        else this.reference(...input);
+        if (i === 0) console.log(this.reference(input));
+        else this.reference(input);
       });
     });
     console.log(
@@ -62,21 +65,8 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [
-    [
-      [1, 3, 5, 7],
-      [10, 11, 16, 20],
-      [23, 30, 34, 60],
-    ],
-    3,
-  ],
-  [
-    [
-      [1, 3, 5, 7],
-      [10, 11, 16, 20],
-      [23, 30, 34, 60],
-    ],
-    13,
-  ],
+  ["2", "1", "+", "3", "*"],
+  ["4", "13", "5", "/", "+"],
+  ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"],
 ];
 test.quantify(testCases);
