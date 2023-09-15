@@ -1,38 +1,33 @@
 const { performance } = require("perf_hooks");
 
 /*
-  - Use stack to track element order
-  - When operator detected, perform operation on top two elements
-  - Add back result to top of stack
-  - When input is fully indexed, answer is on top of stack
+  - k = max pile is always doable within the given hours so k = [1... max pile]
+  - Instead of searching linearly [1... max pile], apply binary search on k range
+  - Iterate over piles for each choice of k and compare time to finish
 */
 class Solution {
-  method(tokens) {
-    const stack = [];
-    for (const t of tokens) {
-      if (t !== "+" && t !== "-" && t !== "*" && t !== "/") {
-        stack.push(t);
-        continue;
+  method(piles, h) {
+    // Choices for k are from [1... max pile]
+    let res = Math.max(...piles);
+    let [l, r] = [1, res];
+    while (l <= r) {
+      let k = Math.floor((l + r) / 2);
+
+      let timeToFinish = 0;
+      for (const p of piles) {
+        // Time to finish a pile = bananas in a pile over k rounded up
+        timeToFinish += Math.ceil(p / k);
       }
 
-      const [a, b] = [stack.pop(), stack.pop()];
-      switch (t) {
-        case "+":
-          stack.push(parseInt(a) + parseInt(b));
-          break;
-        case "-":
-          stack.push(parseInt(b) - parseInt(a));
-          break;
-        case "*":
-          stack.push(parseInt(a) * parseInt(b));
-          break;
-        case "/":
-          stack.push(parseInt(b) / parseInt(a));
-          break;
+      if (timeToFinish <= h) {
+        res = Math.min(res, k);
+        r = k - 1;
+      } else {
+        l = k + 1;
       }
     }
 
-    return stack.length > 0 ? stack[0] : null;
+    return res;
   }
 
   reference() {}
@@ -42,8 +37,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(input));
-        else this.method(input);
+        if (i === 0) console.log(this.method(...input));
+        else this.method(...input);
       });
     });
     console.log(
@@ -53,8 +48,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(input));
-        else this.reference(input);
+        if (i === 0) console.log(this.reference(...input));
+        else this.reference(...input);
       });
     });
     console.log(
@@ -65,8 +60,10 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  ["2", "1", "+", "3", "*"],
-  ["4", "13", "5", "/", "+"],
-  ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"],
+  [[3, 6, 7, 11], 8],
+  [[30, 11, 23, 4, 20], 5],
+  [[30, 11, 23, 4, 20], 6],
+  // Additional
+  [[312884470], 312884469],
 ];
 test.quantify(testCases);
