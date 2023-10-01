@@ -1,29 +1,30 @@
 const { performance } = require("perf_hooks");
 
 /*
-  - Use DFS to generate all possible combinations of parenthesis
-  - Add "(" first and only add ")" if there are more ")" than "("
+  - Binary search starting at ends of input array
+  - Input may or may not be rotated, check subarray on each iteration
 */
 class Solution {
-  method(n) {
-    const res = [];
+  method(nums, target) {
+    let [l, r] = [0, nums.length - 1];
 
-    const dfs = (open, close, combo) => {
-      if (open === 0 && close === 0) {
-        res.push(combo);
-        return;
+    while (l <= r) {
+      const m = Math.floor((l + r) / 2);
+
+      if (target === nums[m]) return m;
+      else if (target < nums[m]) {
+        // Normal case: left is less than right
+        if (nums[l] < nums[r]) r = m - 1;
+        // Rotated case: left is greater than right
+        else l = m + 1;
+      } else {
+        // Opposite of above cases
+        if (nums[l] < nums[r]) l = m + 1;
+        else r = m - 1;
       }
+    }
 
-      // Prefer to add "(" first if available
-      if (open > 0) dfs(open - 1, close, combo + "(");
-      // Only add ")" parenthesis if there are more ")" than "("
-      if (close > open) dfs(open, close - 1, combo + ")");
-
-      return;
-    };
-
-    dfs(n, n, "");
-    return res;
+    return -1;
   }
 
   reference() {}
@@ -33,8 +34,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(input));
-        else this.method(input);
+        if (i === 0) console.log(this.method(...input));
+        else this.method(...input);
       });
     });
     console.log(
@@ -44,8 +45,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(input));
-        else this.reference(input);
+        if (i === 0) console.log(this.reference(...input));
+        else this.reference(...input);
       });
     });
     console.log(
@@ -55,5 +56,9 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [3, 1];
+const testCases = [
+  [[4, 5, 6, 7, 0, 1, 2], 0],
+  [[4, 5, 6, 7, 0, 1, 2], 3],
+  [[1], 0],
+];
 test.quantify(testCases);
