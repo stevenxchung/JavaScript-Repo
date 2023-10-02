@@ -1,30 +1,25 @@
 const { performance } = require("perf_hooks");
 
 /*
-  - Binary search starting at ends of input array
-  - Input may or may not be rotated, check subarray on each iteration
+  - Track day (index) in monotonically decreasing stack
+  - Stack only needs to track index since temperature is already in input
+  - While loop for popping off stack and computing days
 */
 class Solution {
-  method(nums, target) {
-    let [l, r] = [0, nums.length - 1];
+  method(temperatures) {
+    const stack = [];
+    const res = new Array(temperatures.length).fill(0);
 
-    while (l <= r) {
-      const m = Math.floor((l + r) / 2);
-
-      if (target === nums[m]) return m;
-      else if (target < nums[m]) {
-        // Normal case: left is less than right
-        if (nums[l] < nums[r]) r = m - 1;
-        // Rotated case: left is greater than right
-        else l = m + 1;
-      } else {
-        // Opposite of above cases
-        if (nums[l] < nums[r]) l = m + 1;
-        else r = m - 1;
+    for (const [currDay, t] of temperatures.entries()) {
+      while (stack && temperatures[stack[stack.length - 1]] < t) {
+        const prevDay = stack.pop();
+        // Number of days until greater temperature
+        res[prevDay] = currDay - prevDay;
       }
+      stack.push(currDay);
     }
 
-    return -1;
+    return res;
   }
 
   reference() {}
@@ -34,8 +29,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(...input));
-        else this.method(...input);
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
       });
     });
     console.log(
@@ -45,8 +40,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(...input));
-        else this.reference(...input);
+        if (i === 0) console.log(this.reference(input));
+        else this.reference(input);
       });
     });
     console.log(
@@ -57,8 +52,8 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [[4, 5, 6, 7, 0, 1, 2], 0],
-  [[4, 5, 6, 7, 0, 1, 2], 3],
-  [[1], 0],
+  [73, 74, 75, 71, 69, 72, 76, 73],
+  [30, 40, 50, 60],
+  [30, 60, 90],
 ];
 test.quantify(testCases);
