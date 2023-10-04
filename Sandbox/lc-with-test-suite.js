@@ -1,25 +1,21 @@
 const { performance } = require("perf_hooks");
 
 /*
-  - Track day (index) in monotonically decreasing stack
-  - Stack only needs to track index since temperature is already in input
-  - While loop for popping off stack and computing days
+  - Binary search starting at ends of sorted (possibly rotated) input array
+  - Compare left and right pointers with each other find min
 */
 class Solution {
-  method(temperatures) {
-    const stack = [];
-    const res = new Array(temperatures.length).fill(0);
+  method(nums) {
+    let [l, r] = [0, nums.length - 1];
 
-    for (const [currDay, t] of temperatures.entries()) {
-      while (stack && temperatures[stack[stack.length - 1]] < t) {
-        const prevDay = stack.pop();
-        // Number of days until greater temperature
-        res[prevDay] = currDay - prevDay;
+    while (l <= r) {
+      const m = Math.floor((l + r) / 2);
+      if (nums[l] < nums[r]) {
+        return nums[l];
+      } else {
+        l = m + 1;
       }
-      stack.push(currDay);
     }
-
-    return res;
   }
 
   reference() {}
@@ -52,8 +48,8 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [73, 74, 75, 71, 69, 72, 76, 73],
-  [30, 40, 50, 60],
-  [30, 60, 90],
+  [3, 4, 5, 1, 2],
+  [4, 5, 6, 7, 0, 1, 2],
+  [11, 13, 15, 17],
 ];
 test.quantify(testCases);
