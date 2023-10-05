@@ -1,21 +1,21 @@
 const { performance } = require("perf_hooks");
 
 /*
-  - Binary search starting at ends of sorted (possibly rotated) input array
-  - Compare left and right pointers with each other find min
+  - Determine when each car will reach destination (target = speed * t + start)
+  - Add time-to-target to stack but pop if next car is slower or same speed as previous car
 */
 class Solution {
-  method(nums) {
-    let [l, r] = [0, nums.length - 1];
+  method(target, position, speed) {
+    const stack = [];
 
-    while (l <= r) {
-      const m = Math.floor((l + r) / 2);
-      if (nums[l] < nums[r]) {
-        return nums[l];
-      } else {
-        l = m + 1;
-      }
+    for (let i = 0; i < position.length; i++) {
+      const t = (target - position[i]) / speed[i];
+      // Car behind cannot overtake car in front
+      if (stack && stack[stack.length - 1] <= t) stack.pop();
+      else stack.push(t);
     }
+
+    return stack.length;
   }
 
   reference() {}
@@ -25,8 +25,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(input));
-        else this.method(input);
+        if (i === 0) console.log(this.method(...input));
+        else this.method(...input);
       });
     });
     console.log(
@@ -36,8 +36,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(input));
-        else this.reference(input);
+        if (i === 0) console.log(this.reference(...input));
+        else this.reference(...input);
       });
     });
     console.log(
@@ -48,8 +48,8 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [3, 4, 5, 1, 2],
-  [4, 5, 6, 7, 0, 1, 2],
-  [11, 13, 15, 17],
+  [12, [10, 8, 0, 5, 3], [2, 4, 1, 1, 3]],
+  [10, [3], [3]],
+  [100, [0, 2, 4], [4, 2, 1]],
 ];
 test.quantify(testCases);
