@@ -1,50 +1,51 @@
 const { performance } = require("perf_hooks");
 
 /*
-  - Utilize a stack where min is always on top
-  - On push, compare with top to update min if necessary
+  - Use hashmap where key is a string and value is an array of [value, timestamp]
+  - On fetch, use binary search to return the latest timestamp <= given timestamp
 */
 class Solution {
   constructor(debug = false) {
     this.debug = debug;
-    // Stores [val, min], end of stack is the "top"
-    this.stack = [];
+    this.table = {};
   }
 
-  push(val) {
-    const currMin = this.getMin();
-    val < currMin
-      ? this.stack.push([val, val])
-      : this.stack.push([val, currMin]);
+  set(key, value, timestamp) {
+    if (key in this.table) this.table[key].push([value, timestamp]);
+    else this.table[key] = [[value, timestamp]];
   }
 
-  pop() {
-    this.stack.pop();
-  }
+  get(key, timestamp) {
+    let [v, t] = [this.table[key][this.table[key].length - 1]];
+    if (key in this.table && this.table[key].length === 1) {
+      v = this.table[key][0][0];
+      if (this.debug) console.log(v);
+      return v;
+    }
 
-  top() {
-    const res = this.stack[this.stack.length - 1][0];
-    if (this.debug) console.log(`top(): ${res}`);
-    return res;
-  }
+    let [l, r] = [0, this.table[key].length - 1];
+    while (l <= r) {
+      const m = Math.floor((l + r) / 2);
+      [v, t] = this.table[key][m];
+      // Binary search on timestamp
+      if (t === timestamp) {
+        if (this.debug) console.log(v);
+        return v;
+      } else if (t < timestamp) l = m + 1;
+      else r = m - 1;
+    }
 
-  getMin() {
-    // Handle edge case
-    if (this.stack.length === 0) return Number.MAX_SAFE_INTEGER;
-
-    const res = this.stack[this.stack.length - 1][1];
-    if (this.debug) console.log(`getMin(): ${res}`);
-    return res;
+    if (this.debug) console.log(v);
+    return v;
   }
 }
 
 const test = new Solution((debug = true));
 const solStart = performance.now();
-test.push(-2);
-test.push(0);
-test.push(-3);
-test.getMin(); // return -3
-test.pop();
-test.top(); // return 0
-test.getMin(); // return -2
+test.set("foo", "bar", 1);
+test.get("foo", 1); // return "bar"
+test.get("foo", 3); // return "bar"
+test.set("foo", "bar2", 4);
+test.get("foo", 4); // return "bar2"
+test.get("foo", 5); // return "bar2"
 console.log(`Runtime for solution: ${(performance.now() - solStart) / 1000}`);
