@@ -1,21 +1,26 @@
 const { performance } = require("perf_hooks");
 
+class TreeNode {
+  constructor(val, left, right) {
+    this.val = val === undefined ? 0 : val;
+    this.left = left === undefined ? null : left;
+    this.right = right === undefined ? null : right;
+  }
+}
+
 /*
-  - Determine when each car will reach destination (target = speed * t + start)
-  - Add time-to-target to stack but pop if next car is slower or same speed as previous car
+  - BST has left node less than current and right node greater than current
+  - Use DFS, go left when p and q < node and right when p and q > node
 */
 class Solution {
-  method(target, position, speed) {
-    const stack = [];
+  method(root, p, q) {
+    const dfs = (node) => {
+      if (p.val < node.val && q.val < node.val) return dfs(node.left);
+      if (p.val > node.val && q.val > node.val) return dfs(node.right);
+      return node.val;
+    };
 
-    for (let i = 0; i < position.length; i++) {
-      const t = (target - position[i]) / speed[i];
-      // Car behind cannot overtake car in front
-      if (stack && stack[stack.length - 1] <= t) stack.pop();
-      else stack.push(t);
-    }
-
-    return stack.length;
+    return dfs(root);
   }
 
   reference() {}
@@ -48,8 +53,43 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [12, [10, 8, 0, 5, 3], [2, 4, 1, 1, 3]],
-  [10, [3], [3]],
-  [100, [0, 2, 4], [4, 2, 1]],
+  [
+    new TreeNode(
+      6,
+      new TreeNode(
+        2,
+        new TreeNode(0),
+        new TreeNode(4, new TreeNode(3), new TreeNode(5))
+      ),
+      new TreeNode(8, new TreeNode(7), new TreeNode(9))
+    ),
+    new TreeNode(2),
+    new TreeNode(8),
+  ],
+  [
+    new TreeNode(
+      6,
+      new TreeNode(
+        2,
+        new TreeNode(0),
+        new TreeNode(4, new TreeNode(3), new TreeNode(5))
+      ),
+      new TreeNode(8, new TreeNode(7), new TreeNode(9))
+    ),
+    new TreeNode(2),
+    new TreeNode(4),
+  ],
+  [new TreeNode(2, new TreeNode(1)), new TreeNode(2), new TreeNode(1)],
+  // Additional
+  [
+    new TreeNode(2, new TreeNode(1), new TreeNode(3)),
+    new TreeNode(3),
+    new TreeNode(1),
+  ],
+  [
+    new TreeNode(3, new TreeNode(1, null, new TreeNode(2)), new TreeNode(4)),
+    new TreeNode(2),
+    new TreeNode(4),
+  ],
 ];
 test.quantify(testCases);
