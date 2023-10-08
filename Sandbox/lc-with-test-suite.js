@@ -9,18 +9,27 @@ class TreeNode {
 }
 
 /*
-  - BST has left node less than current and right node greater than current
-  - Use DFS, go left when p and q < node and right when p and q > node
+  - Use BFS for level-order traversal
+  - Optimize using temp array for storing next level to avoid using shift()
 */
 class Solution {
-  method(root, p, q) {
-    const dfs = (node) => {
-      if (p.val < node.val && q.val < node.val) return dfs(node.left);
-      if (p.val > node.val && q.val > node.val) return dfs(node.right);
-      return node.val;
-    };
+  method(root) {
+    const res = [];
+    if (!root) return res;
 
-    return dfs(root);
+    let q = [root];
+    while (q.length > 0) {
+      const [temp, next] = [[], []];
+      for (const node of q) {
+        if (node.left) next.push(node.left);
+        if (node.right) next.push(node.right);
+        temp.push(node.val);
+      }
+      res.push(temp);
+      q = next;
+    }
+
+    return res;
   }
 
   reference() {}
@@ -30,8 +39,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(...input));
-        else this.method(...input);
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
       });
     });
     console.log(
@@ -41,8 +50,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(...input));
-        else this.reference(...input);
+        if (i === 0) console.log(this.reference(input));
+        else this.reference(input);
       });
     });
     console.log(
@@ -53,43 +62,12 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [
-    new TreeNode(
-      6,
-      new TreeNode(
-        2,
-        new TreeNode(0),
-        new TreeNode(4, new TreeNode(3), new TreeNode(5))
-      ),
-      new TreeNode(8, new TreeNode(7), new TreeNode(9))
-    ),
-    new TreeNode(2),
-    new TreeNode(8),
-  ],
-  [
-    new TreeNode(
-      6,
-      new TreeNode(
-        2,
-        new TreeNode(0),
-        new TreeNode(4, new TreeNode(3), new TreeNode(5))
-      ),
-      new TreeNode(8, new TreeNode(7), new TreeNode(9))
-    ),
-    new TreeNode(2),
-    new TreeNode(4),
-  ],
-  [new TreeNode(2, new TreeNode(1)), new TreeNode(2), new TreeNode(1)],
-  // Additional
-  [
-    new TreeNode(2, new TreeNode(1), new TreeNode(3)),
-    new TreeNode(3),
-    new TreeNode(1),
-  ],
-  [
-    new TreeNode(3, new TreeNode(1, null, new TreeNode(2)), new TreeNode(4)),
-    new TreeNode(2),
-    new TreeNode(4),
-  ],
+  new TreeNode(
+    3,
+    new TreeNode(9),
+    new TreeNode(20, new TreeNode(15), new TreeNode(7))
+  ),
+  new TreeNode(1),
+  null,
 ];
 test.quantify(testCases);
