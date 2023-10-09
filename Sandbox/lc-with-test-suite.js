@@ -9,26 +9,25 @@ class TreeNode {
 }
 
 /*
-  - Use BFS for level-order traversal
-  - Optimize using temp array for storing next level to avoid using shift()
+  - DFS but traversing right side first
+  - Use set to track if level already visited
 */
 class Solution {
   method(root) {
     const res = [];
-    if (!root) return res;
+    const seen = new Set();
+    const dfs = (node, level) => {
+      if (!node || seen.has(level)) return;
 
-    let q = [root];
-    while (q.length > 0) {
-      const [temp, next] = [[], []];
-      for (const node of q) {
-        if (node.left) next.push(node.left);
-        if (node.right) next.push(node.right);
-        temp.push(node.val);
-      }
-      res.push(temp);
-      q = next;
-    }
+      seen.add(level);
+      res.push(node.val);
+      dfs(node.right, level + 1);
+      dfs(node.left, level + 1);
 
+      return;
+    };
+
+    dfs(root, 0);
     return res;
   }
 
@@ -63,11 +62,11 @@ class Solution {
 const test = new Solution();
 const testCases = [
   new TreeNode(
-    3,
-    new TreeNode(9),
-    new TreeNode(20, new TreeNode(15), new TreeNode(7))
+    1,
+    new TreeNode(2, null, new TreeNode(5)),
+    new TreeNode(3, new TreeNode(4))
   ),
-  new TreeNode(1),
+  new TreeNode(1, null, new TreeNode(3)),
   null,
 ];
 test.quantify(testCases);
