@@ -9,27 +9,23 @@ class TreeNode {
 }
 
 /*
-  - DFS and compare current node with greatest node seen on path so far
+  - DFS to determine if subtree is BST
+  - A tree with a single node is a BST
+  - Treat left or right value as previous node value
+  - Left and right nodes must be strictly < or > than current node
 */
 class Solution {
   method(root) {
-    let count = 0;
+    const isBST = (node, left, right) => {
+      if (!node) return true;
+      if (left >= node.val || node.val >= right) return false;
 
-    const dfs = (node, prev) => {
-      if (!node) return;
-      if (node.val >= prev) {
-        count++;
-        prev = node.val;
-      }
-
-      dfs(node.left, prev);
-      dfs(node.right, prev);
-
-      return;
+      return (
+        isBST(node.left, left, node.val) && isBST(node.right, node.val, right)
+      );
     };
 
-    dfs(root, root.val);
-    return count;
+    return isBST(root, -Number.MAX_VALUE, Number.MAX_VALUE);
   }
 
   reference() {}
@@ -62,12 +58,11 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
+  new TreeNode(2, new TreeNode(1), new TreeNode(3)),
   new TreeNode(
-    3,
-    new TreeNode(1, new TreeNode(3)),
-    new TreeNode(4, new TreeNode(1), new TreeNode(5))
+    5,
+    new TreeNode(1),
+    new TreeNode(4, new TreeNode(3), new TreeNode(6))
   ),
-  new TreeNode(3, new TreeNode(3, new TreeNode(4), new TreeNode(2))),
-  new TreeNode(1),
 ];
 test.quantify(testCases);
