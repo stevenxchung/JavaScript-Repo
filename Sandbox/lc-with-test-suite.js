@@ -9,26 +9,27 @@ class TreeNode {
 }
 
 /*
-  - DFS but traversing right side first
-  - Use set to track if level already visited
+  - DFS and compare current node with greatest node seen on path so far
 */
 class Solution {
   method(root) {
-    const res = [];
-    const seen = new Set();
-    const dfs = (node, level) => {
-      if (!node || seen.has(level)) return;
+    let count = 0;
 
-      seen.add(level);
-      res.push(node.val);
-      dfs(node.right, level + 1);
-      dfs(node.left, level + 1);
+    const dfs = (node, prev) => {
+      if (!node) return;
+      if (node.val >= prev) {
+        count++;
+        prev = node.val;
+      }
+
+      dfs(node.left, prev);
+      dfs(node.right, prev);
 
       return;
     };
 
-    dfs(root, 0);
-    return res;
+    dfs(root, root.val);
+    return count;
   }
 
   reference() {}
@@ -62,11 +63,11 @@ class Solution {
 const test = new Solution();
 const testCases = [
   new TreeNode(
-    1,
-    new TreeNode(2, null, new TreeNode(5)),
-    new TreeNode(3, new TreeNode(4))
+    3,
+    new TreeNode(1, new TreeNode(3)),
+    new TreeNode(4, new TreeNode(1), new TreeNode(5))
   ),
-  new TreeNode(1, null, new TreeNode(3)),
-  null,
+  new TreeNode(3, new TreeNode(3, new TreeNode(4), new TreeNode(2))),
+  new TreeNode(1),
 ];
 test.quantify(testCases);
