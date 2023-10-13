@@ -9,27 +9,27 @@ class TreeNode {
 }
 
 /*
-  - Use in-order DFS to traverse tree
-  - Track values in an array and return when array length = k
-  - The kth smallest value is the last value in the array
+  - DFS to go through array and built tree
+  - Preorder yields parent node
+  - Inorder yields child nodes
 */
 class Solution {
-  method(root, k) {
-    const res = [];
+  method(preorder, inorder) {
+    const dfs = (pre, inord) => {
+      if (pre.length === 0 || inord.length === 0) return null;
 
-    const dfs = (node) => {
-      if (!node || res.length === k) return;
+      // Get parent node and shrink array
+      const parentNode = pre.shift();
+      // Get index to slice around
+      const i = inord.indexOf(parentNode);
+      const node = new TreeNode(parentNode);
+      node.left = dfs(pre, inord.slice(0, i));
+      node.right = dfs(pre, inord.slice(i + 1));
 
-      dfs(node.left);
-      // Only add to array if length < k
-      if (res.length < k) res.push(node.val);
-      dfs(node.right);
-
-      return;
+      return node;
     };
 
-    dfs(root);
-    return res.pop();
+    return dfs(preorder, inorder);
   }
 
   reference() {}
@@ -62,14 +62,10 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [new TreeNode(3, new TreeNode(1, null, new TreeNode(2)), new TreeNode(4)), 1],
   [
-    new TreeNode(
-      5,
-      new TreeNode(3, new TreeNode(2, new TreeNode(1)), new TreeNode(4)),
-      new TreeNode(6)
-    ),
-    3,
+    [3, 9, 20, 15, 7],
+    [9, 3, 15, 20, 7],
   ],
+  [[-1], [-1]],
 ];
 test.quantify(testCases);
