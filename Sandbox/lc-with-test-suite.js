@@ -9,27 +9,27 @@ class TreeNode {
 }
 
 /*
-  - DFS to go through array and built tree
-  - Preorder yields parent node
-  - Inorder yields child nodes
+  - DFS through decision tree
+  - Decide to add or skip element on each recursion
 */
 class Solution {
-  method(preorder, inorder) {
-    const dfs = (pre, inord) => {
-      if (pre.length === 0 || inord.length === 0) return null;
+  method(nums) {
+    const res = [];
 
-      // Get parent node and shrink array
-      const parentNode = pre.shift();
-      // Get index to slice around
-      const i = inord.indexOf(parentNode);
-      const node = new TreeNode(parentNode);
-      node.left = dfs(pre, inord.slice(0, i));
-      node.right = dfs(pre, inord.slice(i + 1));
+    const dfs = (i, subset) => {
+      if (i >= nums.length) {
+        res.push(subset);
+        return;
+      }
 
-      return node;
+      dfs(i + 1, subset.concat(nums[i]));
+      dfs(i + 1, subset);
+
+      return;
     };
 
-    return dfs(preorder, inorder);
+    dfs(0, []);
+    return res;
   }
 
   reference() {}
@@ -39,8 +39,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(...input));
-        else this.method(...input);
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
       });
     });
     console.log(
@@ -50,8 +50,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(...input));
-        else this.reference(...input);
+        if (i === 0) console.log(this.reference(input));
+        else this.reference(input);
       });
     });
     console.log(
@@ -61,11 +61,5 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [
-  [
-    [3, 9, 20, 15, 7],
-    [9, 3, 15, 20, 7],
-  ],
-  [[-1], [-1]],
-];
+const testCases = [[1, 2, 3], [0]];
 test.quantify(testCases);
