@@ -9,26 +9,30 @@ class TreeNode {
 }
 
 /*
-  - DFS through decision tree
-  - Decide to add or skip element on each recursion
+  - DFS on decision tree (add candidate to subset or skip)
+  - Return if total > target or i >= candidates.length
+  - Add to result and return if total === target
 */
 class Solution {
-  method(nums) {
+  method(candidates, target) {
     const res = [];
 
-    const dfs = (i, subset) => {
-      if (i >= nums.length) {
-        res.push(subset);
+    const dfs = (i, subset, total) => {
+      if (total > target || i >= candidates.length) return;
+      if (total === target) {
+        res.push([...subset]);
         return;
       }
 
-      dfs(i + 1, subset.concat(nums[i]));
-      dfs(i + 1, subset);
+      subset.push(candidates[i]);
+      dfs(i, subset, total + candidates[i]);
+      subset.pop();
+      dfs(i + 1, subset, total);
 
       return;
     };
 
-    dfs(0, []);
+    dfs(0, [], 0);
     return res;
   }
 
@@ -39,8 +43,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(input));
-        else this.method(input);
+        if (i === 0) console.log(this.method(...input));
+        else this.method(...input);
       });
     });
     console.log(
@@ -50,8 +54,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(input));
-        else this.reference(input);
+        if (i === 0) console.log(this.reference(...input));
+        else this.reference(...input);
       });
     });
     console.log(
@@ -61,5 +65,9 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [[1, 2, 3], [0]];
+const testCases = [
+  [[2, 3, 6, 7], 7],
+  [[2, 3, 5], 8],
+  [[2], 1],
+];
 test.quantify(testCases);
