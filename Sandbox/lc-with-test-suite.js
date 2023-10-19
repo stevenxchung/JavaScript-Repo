@@ -9,33 +9,34 @@ class TreeNode {
 }
 
 /*
-  - DFS on decision tree to add or skip element
-  - One path includes nums[i] and another does not
-  - Return when i === nums.length
+  - DFS on decision tree with sorted input
+  - Return when target reached
+  - Skip if candidate same as previous
+  - Break out of loop if total will be greater than target
 */
 class Solution {
-  method(nums) {
-    nums.sort();
+  method(candidates, target) {
+    candidates.sort((a, b) => a - b);
     const res = [];
 
-    const dfs = (i, subset) => {
-      if (i === nums.length) {
+    const dfs = (i, subset, total) => {
+      if (total === target) {
         res.push([...subset]);
         return;
       }
 
-      // Subsets that include nums[i]
-      subset.push(nums[i]);
-      dfs(i + 1, subset);
-      subset.pop();
-      // Subsets that skip nums[i]
-      while (i + 1 < nums.length && nums[i] === nums[i + 1]) i++;
-      dfs(i + 1, subset);
+      for (let j = i; j < candidates.length; j++) {
+        // Skip if candidate matches previous
+        if (i != j && candidates[j] === candidates[j - 1]) continue;
+        if (total + candidates[j] > target) break;
+        // Next index must be different from previous
+        dfs(j + 1, [...subset, candidates[j]], total + candidates[j]);
+      }
 
       return;
     };
 
-    dfs(0, []);
+    dfs(0, [], 0);
     return res;
   }
 
@@ -46,8 +47,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(input));
-        else this.method(input);
+        if (i === 0) console.log(this.method(...input));
+        else this.method(...input);
       });
     });
     console.log(
@@ -57,8 +58,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(input));
-        else this.reference(input);
+        if (i === 0) console.log(this.reference(...input));
+        else this.reference(...input);
       });
     });
     console.log(
@@ -68,5 +69,8 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [[1, 2, 2], [0]];
+const testCases = [
+  [[10, 1, 2, 7, 6, 1, 5], 8],
+  [[2, 5, 2, 1, 2], 5],
+];
 test.quantify(testCases);
