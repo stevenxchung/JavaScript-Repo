@@ -9,33 +9,33 @@ class TreeNode {
 }
 
 /*
-  - DFS on decision tree
-  - Loop through each element but skip if seen
-  - Track visited elements in a set, remove from set after recursion
-  - Return if subset.length === nums.length
+  - DFS on decision tree to add or skip element
+  - One path includes nums[i] and another does not
+  - Return when i === nums.length
 */
 class Solution {
   method(nums) {
+    nums.sort();
     const res = [];
-    const seen = new Set();
 
-    const dfs = (subset) => {
-      if (subset.length === nums.length) {
+    const dfs = (i, subset) => {
+      if (i === nums.length) {
         res.push([...subset]);
         return;
       }
 
-      for (const n of nums) {
-        if (seen.has(n)) continue;
-        seen.add(n);
-        dfs([...subset, n]);
-        seen.delete(n);
-      }
+      // Subsets that include nums[i]
+      subset.push(nums[i]);
+      dfs(i + 1, subset);
+      subset.pop();
+      // Subsets that skip nums[i]
+      while (i + 1 < nums.length && nums[i] === nums[i + 1]) i++;
+      dfs(i + 1, subset);
 
       return;
     };
 
-    dfs([]);
+    dfs(0, []);
     return res;
   }
 
@@ -68,5 +68,5 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [[1, 2, 3], [0, 1], [1]];
+const testCases = [[1, 2, 2], [0]];
 test.quantify(testCases);
