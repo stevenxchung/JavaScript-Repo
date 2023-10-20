@@ -9,35 +9,45 @@ class TreeNode {
 }
 
 /*
-  - DFS on decision tree with sorted input
-  - Return when target reached
-  - Skip if candidate same as previous
-  - Break out of loop if total will be greater than target
+  - DFS on adjacent grid cells
+  - Add/remove coordinates from set
+  - Return if i = word.length - 1 and last letter matches
 */
 class Solution {
-  method(candidates, target) {
-    candidates.sort((a, b) => a - b);
-    const res = [];
+  method(board, word) {
+    const [ROWS, COLS] = [board.length, board[0].length];
+    const seen = new Set();
 
-    const dfs = (i, subset, total) => {
-      if (total === target) {
-        res.push([...subset]);
-        return;
-      }
+    const dfs = (i, r, c) => {
+      if (
+        r >= ROWS ||
+        r < 0 ||
+        c >= COLS ||
+        c < 0 ||
+        seen.has(`${r}${c}`) ||
+        board[r][c] !== word[i]
+      )
+        return false;
+      if (i === word.length - 1 && board[r][c] === word[i]) return true;
 
-      for (let j = i; j < candidates.length; j++) {
-        // Skip if candidate matches previous
-        if (i != j && candidates[j] === candidates[j - 1]) continue;
-        if (total + candidates[j] > target) break;
-        // Next index must be different from previous
-        dfs(j + 1, [...subset, candidates[j]], total + candidates[j]);
-      }
+      seen.add(`${r}${c}`);
+      const res =
+        dfs(i + 1, r + 1, c) ||
+        dfs(i + 1, r - 1, c) ||
+        dfs(i + 1, r, c + 1) ||
+        dfs(i + 1, r, c - 1);
+      seen.delete(`${r}${c}`);
 
-      return;
+      return res;
     };
 
-    dfs(0, [], 0);
-    return res;
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        if (dfs(0, r, c)) return true;
+      }
+    }
+
+    return false;
   }
 
   reference() {}
@@ -70,7 +80,29 @@ class Solution {
 
 const test = new Solution();
 const testCases = [
-  [[10, 1, 2, 7, 6, 1, 5], 8],
-  [[2, 5, 2, 1, 2], 5],
+  [
+    [
+      ["A", "B", "C", "E"],
+      ["S", "F", "C", "S"],
+      ["A", "D", "E", "E"],
+    ],
+    "ABCCED",
+  ],
+  [
+    [
+      ["A", "B", "C", "E"],
+      ["S", "F", "C", "S"],
+      ["A", "D", "E", "E"],
+    ],
+    "SEE",
+  ],
+  [
+    [
+      ["A", "B", "C", "E"],
+      ["S", "F", "C", "S"],
+      ["A", "D", "E", "E"],
+    ],
+    "ABCB",
+  ],
 ];
 test.quantify(testCases);
