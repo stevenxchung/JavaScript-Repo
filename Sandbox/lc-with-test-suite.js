@@ -9,45 +9,39 @@ class TreeNode {
 }
 
 /*
-  - DFS on adjacent grid cells
-  - Add/remove coordinates from set
-  - Return if i = word.length - 1 and last letter matches
+  - DFS on decision tree
+  - Increase partition size via loop
+  - Check if new substring a palindrome
+  - Return if i >= s.length
 */
 class Solution {
-  method(board, word) {
-    const [ROWS, COLS] = [board.length, board[0].length];
-    const seen = new Set();
+  isPalindrome(s) {
+    let [l, r] = [0, s.length - 1];
+    while (l < r) {
+      if (s[l] !== s[r]) return false;
+      l++;
+      r--;
+    }
+    return true;
+  }
 
-    const dfs = (i, r, c) => {
-      if (
-        r >= ROWS ||
-        r < 0 ||
-        c >= COLS ||
-        c < 0 ||
-        seen.has(`${r}${c}`) ||
-        board[r][c] !== word[i]
-      )
-        return false;
-      if (i === word.length - 1 && board[r][c] === word[i]) return true;
+  method(s) {
+    const res = [];
 
-      seen.add(`${r}${c}`);
-      const res =
-        dfs(i + 1, r + 1, c) ||
-        dfs(i + 1, r - 1, c) ||
-        dfs(i + 1, r, c + 1) ||
-        dfs(i + 1, r, c - 1);
-      seen.delete(`${r}${c}`);
+    const dfs = (i, arr) => {
+      if (i >= s.length) {
+        res.push([...arr]);
+        return;
+      }
 
-      return res;
+      for (let j = i; j < s.length; j++) {
+        if (!this.isPalindrome(s.slice(i, j + 1))) continue;
+        dfs(j + 1, [...arr, s.slice(i, j + 1)]);
+      }
     };
 
-    for (let r = 0; r < ROWS; r++) {
-      for (let c = 0; c < COLS; c++) {
-        if (dfs(0, r, c)) return true;
-      }
-    }
-
-    return false;
+    dfs(0, []);
+    return res;
   }
 
   reference() {}
@@ -57,8 +51,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(...input));
-        else this.method(...input);
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
       });
     });
     console.log(
@@ -68,8 +62,8 @@ class Solution {
     const refStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.reference(...input));
-        else this.reference(...input);
+        if (i === 0) console.log(this.reference(input));
+        else this.reference(input);
       });
     });
     console.log(
@@ -79,30 +73,5 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = [
-  [
-    [
-      ["A", "B", "C", "E"],
-      ["S", "F", "C", "S"],
-      ["A", "D", "E", "E"],
-    ],
-    "ABCCED",
-  ],
-  [
-    [
-      ["A", "B", "C", "E"],
-      ["S", "F", "C", "S"],
-      ["A", "D", "E", "E"],
-    ],
-    "SEE",
-  ],
-  [
-    [
-      ["A", "B", "C", "E"],
-      ["S", "F", "C", "S"],
-      ["A", "D", "E", "E"],
-    ],
-    "ABCB",
-  ],
-];
+const testCases = ["aab", "a"];
 test.quantify(testCases);
