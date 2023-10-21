@@ -9,38 +9,41 @@ class TreeNode {
 }
 
 /*
-  - DFS on decision tree
-  - Increase partition size via loop
-  - Check if new substring a palindrome
-  - Return if i >= s.length
+  - DFS on combinations of characters based on digit
+  - Hashmap of digits (2-9) to characters
+  - Loop through each character based on digit
+  - Add combination to result and return if i >= digits.length
 */
 class Solution {
-  isPalindrome(s) {
-    let [l, r] = [0, s.length - 1];
-    while (l < r) {
-      if (s[l] !== s[r]) return false;
-      l++;
-      r--;
-    }
-    return true;
-  }
-
-  method(s) {
+  method(digits) {
     const res = [];
+    if (digits.length === 0) return res;
 
-    const dfs = (i, arr) => {
-      if (i >= s.length) {
-        res.push([...arr]);
+    const table = {
+      2: "abc",
+      3: "def",
+      4: "ghi",
+      5: "jkl",
+      6: "mno",
+      7: "pqrs",
+      8: "tuv",
+      9: "wxyz",
+    };
+
+    const dfs = (i, substr) => {
+      if (i >= digits.length) {
+        res.push(substr);
         return;
       }
 
-      for (let j = i; j < s.length; j++) {
-        if (!this.isPalindrome(s.slice(i, j + 1))) continue;
-        dfs(j + 1, [...arr, s.slice(i, j + 1)]);
+      for (const c of table[digits[i]]) {
+        dfs(i + 1, substr + c);
       }
+
+      return;
     };
 
-    dfs(0, []);
+    dfs(0, "");
     return res;
   }
 
@@ -73,5 +76,5 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = ["aab", "a"];
+const testCases = ["23", "", "2"];
 test.quantify(testCases);
