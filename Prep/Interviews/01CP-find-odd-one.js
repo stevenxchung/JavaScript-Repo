@@ -1,5 +1,6 @@
 /*
-*Custom problem
+Original: https://leetcode.com/problems/odd-string-difference/description/
+
 Given a series of strings, find the string where the distances between each neighboring character in the string is different from the rest of the strings.
 */
 const { performance } = require("perf_hooks");
@@ -14,22 +15,22 @@ class Solution {
   }
 
   method(strings) {
-    // Use a hashmap to determine which string is the odd one
-    const table = {}; // { distance: { count, string } }
+    // Use a hashmap to track which string is the odd one
+    const map = {}; // { key: { count } }
+    const res = {}; // { key: { word } }
+
     for (const s of strings) {
-      const charDist = this._calculateDistances(s);
-      if (!(charDist in table)) {
-        table[charDist] = { count: 1, string: s };
-      } else {
-        table[charDist].count++;
+      let key = "";
+      for (let i = 1; i < s.length; i++) {
+        key = `${s[i].charCodeAt() - s[i - 1].charCodeAt()}`;
       }
-    }
-    // The key with the minimum count is the odd one
-    for (const k in table) {
-      if (table[k].count === 1) return table[k].string;
+      map[key] = map[key] + 1 || 1;
+      res[key] = s;
     }
 
-    return null;
+    const oddKey = Object.keys(map).find((key) => map[key] === 1);
+
+    return res[oddKey];
   }
 
   reference(strings) {
