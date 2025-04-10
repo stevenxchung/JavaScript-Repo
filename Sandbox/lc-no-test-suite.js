@@ -1,51 +1,110 @@
 const { performance } = require("perf_hooks");
+const Heap = require("./heap");
 
 /*
-  - Use hashmap where key is a string and value is an array of [value, timestamp]
-  - On fetch, use binary search to return the latest timestamp <= given timestamp
+  ...
 */
 class Solution {
-  constructor(debug = false) {
+  constructor({ k = 10, debug = false }) {
+    this.k = k;
+    this.time = 0;
+    this.tweetMap = {};
+    this.followMap = {};
+
     this.debug = debug;
-    this.table = {};
   }
 
-  set(key, value, timestamp) {
-    if (key in this.table) this.table[key].push([value, timestamp]);
-    else this.table[key] = [[value, timestamp]];
+  /**
+   * @param {number} userId
+   * @param {number} tweetId
+   * @return {void}
+   */
+  postTweet(userId, tweetId) {
+    this.tweetMap[userId]
+      ? this.tweetMap[userId].push([this.time, tweetId])
+      : (this.tweetMap[userId] = [[this.time, tweetId]]);
+
+    this.time++;
+
+    if (this.debug)
+      console.log(`postTweet(${userId}, ${tweetId}):`, this.tweetMap[userId]);
   }
 
-  get(key, timestamp) {
-    let [v, t] = [this.table[key][this.table[key].length - 1]];
-    if (key in this.table && this.table[key].length === 1) {
-      v = this.table[key][0][0];
-      if (this.debug) console.log(v);
-      return v;
-    }
+  /**
+   * @param {number} userId
+   * @return {number[]}
+   */
+  getNewsFeed(userId) {
+    if (!(userId in this.tweetMap)) [];
 
-    let [l, r] = [0, this.table[key].length - 1];
-    while (l <= r) {
-      const m = Math.floor((l + r) / 2);
-      [v, t] = this.table[key][m];
-      // Binary search on timestamp
-      if (t === timestamp) {
-        if (this.debug) console.log(v);
-        return v;
-      } else if (t < timestamp) l = m + 1;
-      else r = m - 1;
+    // Get all tweets for all followed users
+    let newsFeed = [...this.tweetMap[userId]];
+    if (userId in this.followMap) {
+      for (const followeeId of this.followMap[userId]) {
+        if (followeeId in this.tweetMap)
+          newsFeed.push(...this.tweetMap[followeeId].slice(-this.k));
+      }
     }
+    const heap = new Heap((a, b) => b[0] - a[0]);
+    heap.setHeap(newsFeed);
+    const mostRecentTweets = heap.getTopK(this.k).map((e) => e[1]);
 
-    if (this.debug) console.log(v);
-    return v;
+    if (this.debug) console.log(`getNewsFeed(${userId}):`, mostRecentTweets);
+    return mostRecentTweets;
+  }
+
+  /**
+   * @param {number} followerId
+   * @param {number} followeeId
+   * @return {void}
+   */
+  follow(followerId, followeeId) {
+    if (followerId === followeeId) return;
+
+    this.followMap[followerId]
+      ? this.followMap[followerId].add(followeeId)
+      : (this.followMap[followerId] = new Set([followeeId]));
+
+    if (this.debug)
+      console.log(
+        `follow(${followerId}, ${followeeId})`,
+        this.followMap[followerId]
+      );
+  }
+
+  /**
+   * @param {number} followerId
+   * @param {number} followeeId
+   * @return {void}
+   */
+  unfollow(followerId, followeeId) {
+    if (followerId === followeeId) return;
+
+    if (this.followMap[followerId])
+      this.followMap[followerId].delete(followeeId);
+
+    if (this.debug)
+      console.log(
+        `unfollow(${followerId}, ${followeeId})`,
+        this.followMap[followerId]
+      );
   }
 }
 
-const test = new Solution((debug = true));
+const test = new Solution({ debug: true });
 const solStart = performance.now();
-test.set("foo", "bar", 1);
-test.get("foo", 1); // return "bar"
-test.get("foo", 3); // return "bar"
-test.set("foo", "bar2", 4);
-test.get("foo", 4); // return "bar2"
-test.get("foo", 5); // return "bar2"
+// User 1 posts a new tweet(id = 5)
+test.postTweet(1, 5);
+// User 1's news feed should return a list with 1 tweet id -> [5]. return [5]
+test.getNewsFeed(1);
+// User 1 follows user 2
+test.follow(1, 2);
+// User 2 posts a new tweet(id=6)
+test.postTweet(2, 6);
+// User 1's news feed should return a list with 2 tweet ids -> [6, 5]. Tweet id 6 should precede tweet id 5 because it is posted after tweet id 5
+test.getNewsFeed(1);
+// User 1 unfollows user 2
+test.unfollow(1, 2);
+// User 1's news feed should return a list with 1 tweet id -> [5], since user 1 is no longer following user 2
+test.getNewsFeed(1);
 console.log(`Runtime for solution: ${(performance.now() - solStart) / 1000}`);
