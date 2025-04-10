@@ -1,4 +1,6 @@
 const { performance } = require("perf_hooks");
+const Deque = require("./deque");
+const Heap = require("./heap");
 
 class TreeNode {
   constructor(val, left, right) {
@@ -9,42 +11,33 @@ class TreeNode {
 }
 
 /*
-  - DFS on combinations of characters based on digit
-  - Hashmap of digits (2-9) to characters
-  - Loop through each character based on digit
-  - Add combination to result and return if i >= digits.length
+  ...
 */
 class Solution {
-  method(digits) {
-    const res = [];
-    if (digits.length === 0) return res;
+  method(tasks, n) {
+    const charCount = {};
+    for (const c of tasks) {
+      charCount[c] = (charCount[c] || 0) + 1;
+    }
 
-    const table = {
-      2: "abc",
-      3: "def",
-      4: "ghi",
-      5: "jkl",
-      6: "mno",
-      7: "pqrs",
-      8: "tuv",
-      9: "wxyz",
-    };
+    const heap = new Heap((a, b) => b - a);
+    heap.heapify(Object.values(charCount));
 
-    const dfs = (i, substr) => {
-      if (i >= digits.length) {
-        res.push(substr);
-        return;
+    const q = new Deque();
+    let time = 0;
+    while (heap.size > 0 || q.size > 0) {
+      time++;
+
+      if (heap.size > 0) {
+        const count = heap.pop() - 1;
+        if (count !== 0) q.push([count, time + n]);
       }
 
-      for (const c of table[digits[i]]) {
-        dfs(i + 1, substr + c);
-      }
+      // Add back to heap after idle time
+      if (q.size > 0 && q.peekLeft()[1] === time) heap.push(q.popLeft()[0]);
+    }
 
-      return;
-    };
-
-    dfs(0, "");
-    return res;
+    return time;
   }
 
   reference() {}
@@ -54,8 +47,8 @@ class Solution {
     const solStart = performance.now();
     runsArr.map((_, i) => {
       testCases.map((input) => {
-        if (i === 0) console.log(this.method(input));
-        else this.method(input);
+        if (i === 0) console.log(this.method(...input));
+        else this.method(...input);
       });
     });
     console.log(
@@ -76,5 +69,13 @@ class Solution {
 }
 
 const test = new Solution();
-const testCases = ["23", "", "2"];
+const testCases = [
+  [["A", "A", "A", "B", "B", "B"], 2],
+  [["A", "C", "A", "B", "D", "B"], 1],
+  [["A", "A", "A", "B", "B", "B"], 3],
+  // Additional
+  [["A", "A", "A", "B", "B", "B"], 0],
+  [["A", "A", "A", "A", "A", "A", "B", "C", "D", "E", "F", "G"], 1],
+  [["A", "A", "A", "A", "A", "A", "B", "C", "D", "E", "F", "G"], 2],
+];
 test.quantify(testCases);
