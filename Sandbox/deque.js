@@ -7,10 +7,14 @@ class Node {
 }
 
 class Deque {
-  constructor() {
+  constructor(arr = []) {
     this.front = null;
     this.rear = null;
     this.size = 0;
+
+    for (const val of arr) {
+      this.push(val);
+    }
   }
 
   pushLeft(value) {
