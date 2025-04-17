@@ -16,19 +16,21 @@ class Solution {
 
   method(strings) {
     // Use a hashmap to track which string is the odd one
-    const map = {}; // { key: { count } }
+    const countMap = {}; // { key: { count } }
     const res = {}; // { key: { word } }
 
     for (const s of strings) {
-      let key = "";
+      // Handle full distance between each character
+      let key = [];
       for (let i = 1; i < s.length; i++) {
-        key = `${s[i].charCodeAt() - s[i - 1].charCodeAt()}`;
+        key.push(s[i].charCodeAt() - s[i - 1].charCodeAt());
       }
-      map[key] = map[key] + 1 || 1;
+      key = key.join(",");
+      countMap[key] = (countMap[key] || 0) + 1;
       res[key] = s;
     }
 
-    const oddKey = Object.keys(map).find((key) => map[key] === 1);
+    const oddKey = Object.keys(countMap).find((key) => countMap[key] === 1);
 
     return res[oddKey];
   }
@@ -85,5 +87,9 @@ const test = new Solution();
 const testCases = [
   ["ABC", "DEF", "GHI", "QWE"],
   ["QWE", "ABC", "DEF", "GHI"],
+  // Additional
+  ["ABC", "BCD", "CDE", "ABD"],
+  ["ACE", "BDF", "EGI", "XYZ"],
+  ["ABZ", "ACX", "ADY"],
 ];
 test.quantify(testCases);
