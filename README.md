@@ -4,7 +4,7 @@ To run/debug JavaScript or TypeScript files (VSCode):
 
 1. `npm i -g ts-node typescript`
 2. Create `tsconfig.json` in root directory
-3. Add the below launch configurations in `.vscode`
+3. Add the below `launch.json` configurations in `.vscode`
 
 ```json
 {
