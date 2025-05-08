@@ -1,8 +1,8 @@
 class Heap {
-  constructor(comparator = (a, b) => a - b) {
+  constructor(comparator = (a, b) => a - b, heap = []) {
     // The comparator dictates whether the heap is min or max heap
     this.compare = comparator;
-    this.heap = [];
+    this.heap = heap;
   }
 
   _parent(i) {
@@ -63,10 +63,6 @@ class Heap {
     return this.heap.length;
   }
 
-  setHeap(arr) {
-    this.heap = arr;
-  }
-
   toArray() {
     return [...this.heap];
   }
@@ -88,8 +84,7 @@ class Heap {
     return root;
   }
 
-  heapify(arr) {
-    this.heap = [...arr];
+  heapify() {
     const lastParent = Math.floor(this.size / 2) - 1;
     for (let i = lastParent; i >= 0; i--) this._heapifyDown(i);
   }
