@@ -57,7 +57,7 @@ class Solution {
     return null;
   }
 
-  quantify(testCases, runs = 100000) {
+  quantify(testCases, runs = 1e5) {
     const runsArr = Array.from({ length: runs });
     const solStart = performance.now();
     runsArr.map((_, i) => {
