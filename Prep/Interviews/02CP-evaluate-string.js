@@ -17,47 +17,66 @@ Off limits:
 use of regex, eval
 */
 
-const addToResult = (res, temp, negativeStack) => {
+class Solution {
+  addToResult(res, temp, negativeStack) {
     // Determine outcome of all negatives
     let negativeRes = 1;
     while (negativeStack.length > 0) {
-        negativeRes *= negativeStack.pop();
+      negativeRes *= negativeStack.pop();
     }
     res += negativeRes * Number(temp);
     temp = "";
 
     return [res, temp];
-}
+  }
 
-const evaluate = (input) => {
+  method(input) {
     let res = 0;
     let temp = "";
     let negativeStack = [];
 
     for (let i = 0; i < input.length; i++) {
-        if (input[i] === " ") continue;
-        // Track negatives
-        else if (input[i] === "-") {
-            if (temp !== "") [res, temp] = addToResult(res, temp, negativeStack)
-            negativeStack.push(-1);
-        }
-        else if (input[i] === "+") {
-            [res, temp] = addToResult(res, temp, negativeStack)
-        }
-        // Input must be a number
-        else temp += input[i];
+      if (input[i] === " ") continue;
+      // Track negatives
+      else if (input[i] === "-") {
+        if (temp !== "")
+          [res, temp] = this.addToResult(res, temp, negativeStack);
+        negativeStack.push(-1);
+      } else if (input[i] === "+") {
+        [res, temp] = this.addToResult(res, temp, negativeStack);
+      }
+      // Input must be a number
+      else temp += input[i];
     }
 
     if (temp !== "") {
-        [res, temp] = addToResult(res, temp, negativeStack)
+      [res, temp] = this.addToResult(res, temp, negativeStack);
     }
 
     return res;
-};
+  }
 
-// Test cases
-console.log(evaluate("1 + 2 + 3")); // 6
-console.log(evaluate("-32+-4")); // -36
-// Bonus
-console.log(evaluate("-50--5")); // -45
-console.log(evaluate("50--5")); // 55
+  quantify(testCases, runs = 1e5) {
+    const runsArr = Array.from({ length: runs });
+    const solStart = performance.now();
+    runsArr.map((_, i) => {
+      testCases.map((input) => {
+        if (i === 0) console.log(this.method(input));
+        else this.method(input);
+      });
+    });
+    console.log(
+      `Runtime for solution: ${(performance.now() - solStart) / 1000}\n`
+    );
+  }
+}
+
+const test = new Solution();
+const testCases = [
+  "1 + 2 + 3", // 6
+  "-32+-4", // -36
+  // Additional
+  "-50--5", // -45
+  "50--5", // 55
+];
+test.quantify(testCases);
