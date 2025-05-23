@@ -13,7 +13,7 @@ function funcOne() {
 }
 ```
 
-In this example, the variable *a* is declared outside of the function and in the main body of the script. Therefore, *a* is a global variable that can be referenced in any function in the script.
+In this example, the variable _a_ is declared outside of the function and in the main body of the script. Therefore, _a_ is a global variable that can be referenced in any function in the script.
 
 ## Example 2 - Local Scope
 
@@ -33,9 +33,9 @@ function funcThree() {
 }
 ```
 
-The variable *a* is first declared as a global variable. However, the function funcTwo() alerts the given argument which is not necessarily the same as the global variable *a*.
+The variable _a_ is first declared as a global variable. However, the function funcTwo() alerts the given argument which is not necessarily the same as the global variable _a_.
 
-In function funcThree(), the variable *a* is redeclared inside of the function which makes *a* a local variable.
+In function funcThree(), the variable _a_ is redeclared inside of the function which makes _a_ a local variable.
 
 ## Example 3 - Intermediate (ES5-ES6: let)
 
@@ -50,7 +50,7 @@ function funcFour() {
 }
 ```
 
-Function funcFour() reinitiates *a* to be '4' instead of '1' so when the alert() function is called within the function, the result is '4'.
+Function funcFour() reinitiates _a_ to be '4' instead of '1' so when the alert() function is called within the function, the result is '4'.
 
 ```javascript
 var a = 1;
@@ -77,23 +77,23 @@ function funcSix() {
 alert(new funcSix().a); // Alerts '5'
 ```
 
-In funcSix(), because *this* is not inside of a declared object, when the keyword *this* is called, it assigns the global object to be '5' such that when alert() is called on funcSix().a, the value broadcasted is '5'.
+In funcSix(), because _this_ is not inside of a declared object, when the keyword _this_ is called, it assigns the global object to be '5' such that when alert() is called on funcSix().a, the value broadcasted is '5'.
 
 ## Example 5 - Advanced (Closure)
 
 ```javascript
 var a = 1;
 
-var seven = (function() {
+var seven = (function () {
   var a = 6;
 
-  return function() {
+  return function () {
     alert(a); // Alerts '6'
-  }
+  };
 })();
 ```
 
-In the example above, *a* is accessible in the return function where alert() is called because it is defined in the same function where the return function is defined. This is called closure. The result of this is, when alert() is called in the return function, the value '6' is broadcasted.
+In the example above, _a_ is accessible in the return function where alert() is called because it is defined in the same function where the return function is defined. This is called closure. The result of this is, when alert() is called in the return function, the value '6' is broadcasted.
 
 ## Example 6 - Advanced (Prototype-based Scope Resolution)
 
@@ -112,13 +112,13 @@ alert(new funcEight().a); // Alerts '7'
 alert(new funcEight().b); // Alerts '8'
 ```
 
-The function funcEight() sets the global object to be '7'. Because *a* is set in the constructor by using *this* in funcEight(), when funcEight.prototype.a is assigned a new value, it will not be reached. Conversely, since *b* was not set by any constructor, it can be reached when a new prototype is created.
+The function funcEight() sets the global object to be '7'. Because _a_ is set in the constructor by using _this_ in funcEight(), when funcEight.prototype.a is assigned a new value, it will not be reached. Conversely, since _b_ was not set by any constructor, it can be reached when a new prototype is created.
 
 ## Example 7 - Global + Local (Extra Complex Case)
 
 ```javascript
 var x = 5;
-(function() {
+(function () {
   console.log(x); // Undefined
   var x = 10;
   console.log(x); // Prints out '10'
@@ -129,7 +129,7 @@ Because JavaScript always moves variable declarations (not initializations) to t
 
 ```javascript
 var x = 5;
-(function() {
+(function () {
   var x; // Not defined
   console.log(x); // Undefined
   var x = 10;
@@ -150,4 +150,4 @@ try {
 console.log(e); // Prints '5'
 ```
 
-Inside the catch clause, *e* shadows global and local variables. But the special scope is only for the caught variable. If you write "var e;" inside of the catch clause, it is exactly the same as if you had defined it before or after the try-catch block.
+Inside the catch clause, _e_ shadows global and local variables. But the special scope is only for the caught variable. If you write "var e;" inside of the catch clause, it is exactly the same as if you had defined it before or after the try-catch block.
